@@ -12,7 +12,7 @@ Import the package.
     `import 'package:flutter_textfield_search/search.dart'`;
 
 Then include the widget anywhere you would normally use a TextField widget with a label, and a List
-    // example MaterialApp using TextFieldSearch Widget
+    <br>// example MaterialApp using TextFieldSearch Widget
     ````
         // example list of Strings that will be searchable
         const dummyList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
