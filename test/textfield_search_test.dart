@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:flutter_textfield_search/main.dart';
+import 'package:flutter_textfield_search/textfield_search.dart';
 
 void main() {
   const List dummyList = [

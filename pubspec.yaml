@@ -1,7 +1,7 @@
 name: flutter_textfield_search
 description: A new Flutter package which uses a TextField to search and select it's value from a simple list.
-
-version: 0.0.1
+homepage: https://github.com/alexrindone/flutter_textfield_search
+version: 0.1.0
 author: Alex Rindone
 
 environment:
@@ -11,16 +11,9 @@ dependencies:
   flutter:
     sdk: flutter
 
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.3
-
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-# For information on the generic Dart part of this file, see the
-# following page: https://dart.dev/tools/pub/pubspec
 
 flutter:
   # The following line ensures that the Material Icons font is
@@ -30,5 +23,5 @@ flutter:
 
   module:
     androidX: true
-    androidPackage: com.example.flutter_textfield_search
-    iosBundleIdentifier: com.example.flutter_textfield_search
+    androidPackage: com.flutter_textfield_search
+    iosBundleIdentifier: com.flutter_textfield_search

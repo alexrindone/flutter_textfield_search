@@ -1,97 +1,5 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
-
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  final listOfStyles = [
-    'Stout',
-    'Oatmeal Stout',
-    'Chocolate Stout',
-    'Gose',
-    'IPA',
-    'New England IPA',
-    'India Pale Ale',
-    'Lager',
-    'Ale',
-    'Red Ale'
-  ];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(20),
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Form(
-          child: ListView(
-            children: <Widget>[
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Brewery'
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Beer Name'
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Description'
-                ),
-              ),
-              TextFieldSearch(initialList: listOfStyles, label: 'Style',),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'ABV.'
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'IBU'
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class TextFieldSearch extends StatefulWidget {
   final List initialList;
   final String label;
@@ -111,8 +19,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   OverlayEntry _overlayEntry;
   final LayerLink _layerLink = LayerLink();
   List filteredList = new List();
-  final myController = TextEditingController();
-
+  final textFieldController = TextEditingController();
 
   void resetList() {
     List tempList = new List();
@@ -125,21 +32,23 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   }
 
   void updateList() {
+    // set the filtered list using the initial list
     this.filteredList = widget.initialList;
+    // create an empty temp list
     List tempList = new List();
     // loop through each item in filtered items
     for (int i = 0; i < filteredList.length; i++) {
       // lowercase the item and see if the item contains the string of text from the lowercase search
-      if (this.filteredList[i].toLowerCase().contains(myController.text.toLowerCase())) {
+      if (this.filteredList[i].toLowerCase().contains(textFieldController.text.toLowerCase())) {
         // if there is a match, add to the temp list
         tempList.add(this.filteredList[i]);
       }
     }
     // if no items are found, add message none found
-    if (tempList.length == 0 && myController.text.isNotEmpty) {
+    if (tempList.length == 0 && textFieldController.text.isNotEmpty) {
       tempList.add('No matching styles');
     }
-    if (myController.text.isEmpty){
+    if (textFieldController.text.isEmpty){
       tempList = List();
     }
     setState(() {
@@ -152,6 +61,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   void initState() {
     super.initState();
+    // add event listener to the focus node and only give an overlay if an entry
+    // has focus and insert the overlay into Overlay context otherwise remove it
     _focusNode.addListener(() {
       if (_focusNode.hasFocus){
         this._overlayEntry = this._createOverlayEntry();
@@ -165,22 +76,22 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    textFieldController.dispose();
     super.dispose();
   }
 
   OverlayEntry _createOverlayEntry() {
 
     RenderBox renderBox = context.findRenderObject();
-    var size = renderBox.size;
+    Size overlaySize = renderBox.size;
 
     return OverlayEntry(
         builder: (context) => Positioned(
-          width: size.width,
+          width: overlaySize.width,
           child: CompositedTransformFollower(
             link: _layerLink,
             showWhenUnlinked: false,
-            offset: Offset(0.0, size.height + 5.0),
+            offset: Offset(0.0, overlaySize.height + 5.0),
             child: Material(
               elevation: 4.0,
               child: ListView.builder(
@@ -190,7 +101,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                     onTap: (){
                       // set the controller value to what was selected
                       setState(() {
-                        myController.text = filteredList[i];
+                        textFieldController.text = filteredList[i];
                       });
                       // reset the list so it's empty and not visible
                       resetList();
@@ -198,7 +109,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                       FocusScope.of(context).unfocus();
                     },
                     child: ListTile(
-                      title: Text(filteredList[i])
+                        title: Text(filteredList[i])
                     ),
                   );
                 },
@@ -216,12 +127,14 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: TextField(
-        controller: myController,
+        controller: textFieldController,
         focusNode: this._focusNode,
         decoration: InputDecoration(
             labelText: widget.label
         ),
         onChanged: (String value) {
+          // every time we make a change to the input, update the list
+          // FUTURE: add debouncing to help with performance
           updateList();
         },
       ),
