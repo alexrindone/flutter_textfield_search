@@ -29,6 +29,8 @@ jobs:
       with:
         channel: 'stable'
     - run: flutter pub get
-    - run: flutter test
     - run: flutter analyze
+    - run: flutter test --coverage
+    - run: sudo apt-get install -y lcov
+    - run: genhtml coverage/lcov.info -o coverage/html
 

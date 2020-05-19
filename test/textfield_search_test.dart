@@ -67,5 +67,8 @@ void main() {
     expect(find.byType(GestureDetector), findsNothing);
     // expect that the textfield's value is blank since we set it to blank string
     expect((foundTextField.evaluate().first.widget as TextField).controller.text, '');
+    await tester.enterText(foundTextField, 'Item 6');
+    await tester.pumpAndSettle();
+    expect(find.text('No matching styles'), findsOneWidget);
   });
 }
