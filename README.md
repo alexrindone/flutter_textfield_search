@@ -1,5 +1,5 @@
 # flutter_textfield_search
-![Build and Test](https://github.com/alexrindone/flutter_textfield_search/workflows/Flutter%20Package%20CI/badge.svg)
+![Build and Test](https://github.com/alexrindone/flutter_textfield_search/workflows/Build%20and%20Tests/badge.svg)
 
 A new Flutter package which uses a TextField to search and select it's value from a simple list.
 
