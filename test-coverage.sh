@@ -1,6 +1,7 @@
 #!/bin/bash
-echo 'Writing Code Coverage Summary to COVERAGE.md';
-lcov --summary coverage/lcov.info > ./COVERAGE.md
-#printf '%s\n%s\n' "# COVERAGE" "$(cat ./COVERAGE.md)" >| ./COVERAGE.md;
+echo "Writing Code Coverage Summary to COVERAGE.md";
+MULTILINE=$(lcov --summary coverage/lcov.info);
+echo "${MULTILINE}" > ./COVERAGE.md;
+echo "Test reading coverage file";
 cat ./COVERAGE.md;
-echo 'Finished Writing to File';
+echo "Finished Writing to File";
