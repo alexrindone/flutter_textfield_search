@@ -32,6 +32,9 @@ jobs:
     - run: flutter pub get
     - run: flutter analyze
     - run: flutter test --coverage
-    - run: sudo apt-get install -y lcov
-    - run: sh test-coverage.sh
+#    - run: sudo apt-get install -y lcov
+#    - run: sh test-coverage.sh
+    - uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
 
