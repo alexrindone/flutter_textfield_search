@@ -34,11 +34,4 @@ jobs:
     - run: flutter test --coverage
     - run: sudo apt-get install -y lcov
     - run: sh test-coverage.sh
-    - run: git status
-    - run: git add .
-    - run: git config user.email "arindone@iapp.org"
-    - run: git config user.name "Alex Rindone"
-    - run: git commit -m "auto updating COVERAGE.md"
-    - run: git push origin ${{ github.head_ref }}
-
 
