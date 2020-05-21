@@ -20,7 +20,8 @@ jobs:
     steps:
     # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
-      with: ${{ github.head_ref }}
+      with:
+        ref: ${{ github.head_ref }}
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
