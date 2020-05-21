@@ -29,12 +29,15 @@ jobs:
     - uses: subosito/flutter-action@v1
       with:
         channel: 'stable'
-    - run: flutter pub get
-    - run: flutter analyze
-    - run: flutter test --coverage
-#    - run: sudo apt-get install -y lcov
-#    - run: sh test-coverage.sh
-    - uses: coverallsapp/github-action@master
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+    - run: |
+        flutter pub get
+        flutter analyze
+        flutter test --coverage
+    - name: 'Add lcov'
+      shell: bash
+      run: |
+        sudo apt-get install -y lcov
+        sh test-coverage.sh
+        cat COVERAGE.md
+
 
