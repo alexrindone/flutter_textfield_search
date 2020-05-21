@@ -4,4 +4,5 @@ MULTILINE=$(lcov --summary coverage/lcov.info);
 echo "${MULTILINE}" > ./COVERAGE.md;
 echo "Test reading coverage file";
 cat ./COVERAGE.md;
+git status
 echo "Finished Writing to File";
