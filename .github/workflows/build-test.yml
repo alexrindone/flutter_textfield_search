@@ -31,6 +31,7 @@ jobs:
     - run: flutter test --coverage
     - run: sudo apt-get install -y lcov
     - run: sh test-coverage.sh
+    - run: git checkout ${{github.head_ref }}
     - run: git status
     - run: git add .
     - run: git config user.email "arindone@iapp.org"
