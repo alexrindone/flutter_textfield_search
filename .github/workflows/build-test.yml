@@ -31,5 +31,8 @@ jobs:
     - run: flutter test --coverage
     - run: sudo apt-get install -y lcov
     - run: sh test-coverage.sh
+    - run: git status
+    - run: git add .
+    - run: git commit -m "auto updating COVERAGE.md"
 
 
