@@ -33,4 +33,12 @@ jobs:
     - run: flutter test --coverage
     - run: sudo apt-get install -y lcov
     - run: sh test-coverage.sh
+    - uses: technote-space/create-pr-action@v2
+      with:
+        COMMIT_MESSAGE: 'chore: updating code coverage'
+        COMMIT_NAME: 'GitHub Actions'
+        COMMIT_EMAIL: 'arindone1679@gmail.com'
+        PR_BRANCH_NAME: 'chore-update-code-coverage-${PR_ID}'
+        PR_TITLE: 'chore: update code coverage'
+
 
