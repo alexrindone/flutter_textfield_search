@@ -31,7 +31,6 @@ jobs:
     - run: flutter test --coverage
     - run: sudo apt-get install -y lcov
     - run: sh test-coverage.sh
-    - name: Create Pull Request
       uses: peter-evans/create-pull-request@v2
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
