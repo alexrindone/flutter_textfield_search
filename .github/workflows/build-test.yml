@@ -38,11 +38,11 @@ jobs:
       run: |
         sudo apt-get install -y lcov
         sh test-coverage.sh
-        git status
-        git diff ./COVERAGE.md
-        git add ./COVERAGE.md
-        git config user.email "arindone@iapp.org"
-        git config user.name "Alex Rindone"
-        git commit -m "auto updating COVERAGE.md"
-        git push origin ${{ github.head_ref }}
+#        git status
+#        git diff ./COVERAGE.md
+#        git add ./COVERAGE.md
+#        git config user.email "arindone@iapp.org"
+#        git config user.name "Alex Rindone"
+#        git commit -m "auto updating COVERAGE.md"
+#        git push origin ${{ github.head_ref }}
 
