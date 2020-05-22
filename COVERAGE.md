@@ -1,2 +1,0 @@
-# COVERAGE
-Results of lcov
