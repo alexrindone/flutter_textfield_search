@@ -20,15 +20,15 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-        with:
-          ref: ${{ github.head_ref }}
-        shell: bash
-        run: |
-          sh test-coverage.sh
-          git status
-          git add .
-          git config user.email "arindone@iapp.org"
-          git config user.name "Alex Rindone"
-          git commit -m "auto updating coverage.json"
-          git push origin ${{ github.head_ref }}
+    - uses: actions/checkout@v2
+      with:
+        ref: ${{ github.head_ref }}
+      shell: bash
+    - run: |
+        sh test-coverage.sh
+        git status
+        git add .
+        git config user.email "arindone@iapp.org"
+        git config user.name "Alex Rindone"
+        git commit -m "auto updating coverage.json"
+        git push origin ${{ github.head_ref }}
