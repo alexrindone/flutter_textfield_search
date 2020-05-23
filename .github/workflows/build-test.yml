@@ -7,8 +7,8 @@ name: Build and Tests
 on:
   pull_request:
 #    types: [opened, reopened]
-    paths-ignore:
-    - './coverage/**'
+    paths:
+    - '!coverage/**'
     branches: [ master ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -39,6 +39,6 @@ jobs:
         git add .
         git config user.email "arindone@iapp.org"
         git config user.name "Alex Rindone"
-        git commit -m "auto updating coverage.json and lcov.info"
+        git commit -m "auto updating coverage.json and lcov.info" --allow-empty
         git push origin ${{ github.head_ref }}
 
