@@ -1,8 +1,8 @@
 #!/bin/bash
 echo "Writing Code Coverage Summary to coverage.json file";
-declare -a line_details=();
+line_details="";
 # loop through each line in lcov.info file
-while read line; do
+while read -r line; do
   # all parts, split line into array based on colon
   IFS=: read -ra allparts <<< "$line"
   # case statement using first part of each line in file
@@ -21,9 +21,9 @@ while read line; do
        ;;
        "DA")
        # split the line on a comma
-           IFS=',' read lined lineh <<< "${allparts[1]}"
+           IFS=',' read -r lined lineh <<< "${allparts[1]}"
            all_details='{"line":"'${lined}'","hit":"'${lineh}'"}'
-           line_details+=${all_details},
+           line_details+="${all_details}",
        ;;
        *)
        # default output
