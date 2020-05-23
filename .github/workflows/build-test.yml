@@ -39,6 +39,6 @@ jobs:
         git add .
         git config user.email "arindone@iapp.org"
         git config user.name "Alex Rindone"
-        git commit -m "auto updating coverage.json and lcov.info" --allow-empty
+        git commit --allow-empty -m "auto updating coverage.json and lcov.info"
         git push origin ${{ github.head_ref }}
 
