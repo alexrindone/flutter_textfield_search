@@ -34,7 +34,7 @@ jobs:
         flutter pub get
         flutter analyze
         flutter test --coverage
-        sh test-coverage.sh
+        bash test-coverage.sh
         git status
         git add .
         git config user.email "arindone@iapp.org"
