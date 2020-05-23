@@ -1,6 +1,6 @@
 #!/bin/bash
 echo "Writing Code Coverage Summary to coverage.json file";
-declare -a line_details=()
+declare -a line_details=();
 # loop through each line in lcov.info file
 while read line; do
   # all parts, split line into array based on colon
@@ -32,11 +32,11 @@ while read line; do
 done <./coverage/lcov.info
 # set line summary which is lines hit divided by lines found, then get
 # percentage by multiplying by 100
-line_summary=$(echo "scale=1;$lines_hit/$lines_found*100" | bc)
+line_summary=$(echo "scale=1;$lines_hit/$lines_found*100" | bc);
 # remove the last comma from the array of line details
-line_details=${line_details%,}
+line_details=${line_details%,};
 # create a json string from all variables
-JSON_STRING='{"file":"'$FILE_NAME'","lines":{"coverage_summary":"'$line_summary' ('$lines_hit' of '$lines_found' lines)","found":"'$lines_found'","hit":"'$lines_hit'","details":['$line_details']}}'
+JSON_STRING='{"file":"'$FILE_NAME'","lines":{"coverage_summary":"'$line_summary' ('$lines_hit' of '$lines_found' lines)","found":"'$lines_found'","hit":"'$lines_hit'","details":['$line_details']}}';
 # output content to json fine
 echo ${JSON_STRING} > ./coverage/coverage.json;
 echo "Finished Writing to File";
