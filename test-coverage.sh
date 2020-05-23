@@ -38,5 +38,5 @@ line_details=${line_details%,}
 # create a json string from all variables
 JSON_STRING='{"file":"'$FILE_NAME'","lines":{"coverage_summary":"'$line_summary' ('$lines_hit' of '$lines_found' lines)","found":"'$lines_found'","hit":"'$lines_hit'","details":['$line_details']}}'
 # output content to json fine
-echo ${JSON_STRING} > ./coverage.json;
+echo ${JSON_STRING} > ./coverage/coverage.json;
 echo "Finished Writing to File";
