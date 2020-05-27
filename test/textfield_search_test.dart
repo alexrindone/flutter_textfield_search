@@ -12,12 +12,13 @@ void main() {
   ];
   const String label = 'Test Label';
   const Key testKey = Key('K');
+  final TextEditingController myController = TextEditingController();
 //  final Widget widgetForTest = Scaffold();
   testWidgets('TextFieldSearch has a list and label', (WidgetTester tester) async {
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: TextFieldSearch(key: testKey, initialList: dummyList, label: label)
+        body: TextFieldSearch(key: testKey, initialList: dummyList, label: label, controller: myController,)
       ),
     ));
     // find the TextField by it's type
@@ -63,5 +64,10 @@ void main() {
     await tester.enterText(foundTextField, 'Item 6');
     await tester.pumpAndSettle();
     expect(find.text('No matching styles'), findsOneWidget);
+    var foundConstrainedBox = find.byType(ConstrainedBox);
+    // Constrained Box constraints are infinity when running tests and goes off of biggest
+    expect((foundConstrainedBox.evaluate().first.widget as ConstrainedBox).constraints.biggest, BoxConstraints().biggest);
+    expect((tester.getSize(find.text('No matching styles'))), Size(768, 16.0));
+    expect((tester.getSize(foundConstrainedBox.first)), Size(800, 600.0));
   });
 }
