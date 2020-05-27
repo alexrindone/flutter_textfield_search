@@ -1,6 +1,6 @@
 // EXAMPLE use case for TextFieldSearch Widget
 import 'package:flutter/material.dart';
-import '../lib/textfield_search.dart';
+import 'package:textfield_search/textfield_search.dart';
 
 void main() => runApp(MyApp());
 
@@ -40,6 +40,27 @@ class _MyHomePageState extends State<MyHomePage> {
     'Ale',
     'Red Ale'
   ];
+
+  TextEditingController myController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    myController.addListener(_printLatestValue);
+  }
+
+  _printLatestValue() {
+    print("text field: ${myController.text}");
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    myController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -73,7 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     labelText: 'Description'
                 ),
               ),
-              TextFieldSearch(initialList: listOfStyles, label: 'Style',),
+              TextFieldSearch(
+                initialList: listOfStyles,
+                label: 'Style',
+                controller: myController,
+              ),
               SizedBox(height: 16),
               TextFormField(
                 decoration: InputDecoration(

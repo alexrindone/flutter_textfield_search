@@ -11,17 +11,39 @@ Import the package.
 
     `import 'package:flutter_textfield_search/search.dart'`;
 
-Then include the widget anywhere you would normally use a TextField widget with a label, and a List
+Then include the widget anywhere you would normally use a TextField widget with a String for label, a List for initialList, and a TextEditingController for controller.
     <br>Example MaterialApp using TextFieldSearch Widget
     <br>
 
         const label = "Some Label";
         const dummyList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+        TextEditingController myController = TextEditingController();
         MaterialApp(
           home: Scaffold(
-            body: TextFieldSearch(initialList: dummyList, label: label)
+          body: TextFieldSearch(initialList: dummyList, label: label, controller: myController)
           ),
         )
+        
+To get the value of the selected option, use addListener on the controller to listen for changes:
+
+        @override
+        void dispose() {
+          // Clean up the controller when the widget is removed from the
+          // widget tree.
+          myController.dispose();
+          super.dispose();
+        }
+
+        @override
+        void initState() {
+          super.initState();
+          // Start listening to changes.
+          myController.addListener(_printLatestValue);
+        }
+        
+        _printLatestValue() {
+          print("Textfield value: ${myController.text}");
+        }
 
 ## Issues
 
