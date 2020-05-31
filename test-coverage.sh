@@ -32,11 +32,11 @@ while read -r line; do
 done <./coverage/lcov.info
 # set line summary which is lines hit divided by lines found, then get
 # percentage by multiplying by 100
-line_summary=$(echo "scale=1;$lines_hit/$lines_found*100" | bc);
+line_summary=$(echo "scale=2;$lines_hit/$lines_found*100" | bc);
 # remove the last comma from the array of line details
 line_details=${line_details%,};
 # create a json string from all variables
-JSON_STRING='{"file":"'$FILE_NAME'","lines":{"coverage_summary":"'$line_summary' ('$lines_hit' of '$lines_found' lines)","found":"'$lines_found'","hit":"'$lines_hit'","details":['$line_details']}}';
+JSON_STRING='{"file":"'$FILE_NAME'","lines":{"coverage_summary":"'$line_summary'% ('$lines_hit' of '$lines_found' lines)","found":"'$lines_found'","hit":"'$lines_hit'","details":['$line_details']}}';
 # output content to json fine
 echo "${JSON_STRING}" > ./coverage/coverage.json;
 echo "Finished Writing to File";
