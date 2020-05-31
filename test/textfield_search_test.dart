@@ -64,11 +64,11 @@ void main() {
     expect((foundTextField.evaluate().first.widget as TextField).controller.text, '');
     await tester.enterText(foundTextField, 'Item 6');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    expect(find.text('No matching styles'), findsOneWidget);
+    expect(find.text('No matching items'), findsOneWidget);
     var foundConstrainedBox = find.byType(ConstrainedBox);
     // Constrained Box constraints are infinity when running tests and goes off of biggest
     expect((foundConstrainedBox.evaluate().first.widget as ConstrainedBox).constraints.biggest, BoxConstraints().biggest);
-    expect((tester.getSize(find.text('No matching styles'))), Size(768, 16.0));
+    expect((tester.getSize(find.text('No matching items'))), Size(768, 16.0));
     expect((tester.getSize(foundConstrainedBox.first)), Size(800, 600.0));
     await tester.enterText(find.text('Item 6'), '');
     expect((find.byType(TextField).evaluate().first.widget as TextField).controller.text.isEmpty, true);
@@ -76,13 +76,6 @@ void main() {
   });
 
   testWidgets('TextFieldSearch has a future that returns a List', (WidgetTester tester) async {
-    const List dummyList = [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-      'Item 5'
-    ];
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -104,7 +97,6 @@ void main() {
       home: Scaffold(
           body: TextFieldSearch(
             key: testKey,
-            initialList: dummyList,
             label: label,
             controller: myController,
             future: () {
@@ -138,13 +130,6 @@ void main() {
   });
 
   testWidgets('TextFieldSearch has a future that returns no items', (WidgetTester tester) async {
-    const List dummyList = [
-      'Item 1',
-      'Item 2',
-      'Item 3',
-      'Item 4',
-      'Item 5'
-    ];
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -153,7 +138,6 @@ void main() {
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
       List _list = new List();
-      String _inputText = myController.text;
       // create a list that returns no results
       // to mock a list of items from an http call
       return _list;
@@ -163,7 +147,6 @@ void main() {
       home: Scaffold(
           body: TextFieldSearch(
             key: testKey,
-            initialList: dummyList,
             label: label,
             controller: myController,
             future: () {
@@ -190,7 +173,7 @@ void main() {
     // expect there is a list tile for each item in dummy list (3 total)
     // which the future created
     expect(find.byType(ListTile), findsOneWidget);
-    expect(find.text('No matching styles'), findsOneWidget);
+    expect(find.text('No matching items'), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // remove everything from enter text so that list items are removed and empty
     await tester.enterText(foundTextField, '');
@@ -199,7 +182,7 @@ void main() {
 
   });
 
-  test('Debouncer executes function once despite repeated calls', () async {
+  test('Debouncer executes function only once despite repeated calls', () async {
     // test that debouncer waits for 1000ms before calling function
     Debouncer _debouncer = Debouncer(milliseconds: 1000);
     // expect that the value we pass for milliseconds is the same

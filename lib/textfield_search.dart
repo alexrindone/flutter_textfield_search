@@ -10,7 +10,7 @@ class TextFieldSearch extends StatefulWidget {
   final Function future;
   const TextFieldSearch({
     Key key,
-    @required this.initialList,
+    this.initialList,
     @required this.label,
     @required this.controller,
     this.future,
@@ -43,33 +43,38 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     // mark that the overlay widget needs to be rebuilt
     // so loader can show
     this._overlayEntry.markNeedsBuild();
-    widget.future().then((value) {
-      this.filteredList = value;
-      // create an empty temp list
-      List tempList = new List();
-      // loop through each item in filtered items
-      for (int i = 0; i < filteredList.length; i++) {
-        // lowercase the item and see if the item contains the string of text from the lowercase search
-        if (this.filteredList[i].toLowerCase().contains(widget.controller.text.toLowerCase())) {
-          // if there is a match, add to the temp list
-          tempList.add(this.filteredList[i]);
-        }
-      }
-      // if no items are found, add message none found
-      if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
-        tempList.add('No matching styles');
-      }
-      if (widget.controller.text.isEmpty || widget.controller.text == ''){
-        tempList = List();
-      }
+    if (widget.controller.text.length > 2) {
       setState(() {
-        // after loop is done, set the filteredList state from the tempList
-        this.filteredList = tempList;
-        this.loading = false;
+        loading = true;
       });
-      // mark that the overlay widget needs to be rebuilt so results can show
-      this._overlayEntry.markNeedsBuild();
-    });
+      widget.future().then((value) {
+        this.filteredList = value;
+        // create an empty temp list
+        List tempList = new List();
+        // loop through each item in filtered items
+        for (int i = 0; i < filteredList.length; i++) {
+          // lowercase the item and see if the item contains the string of text from the lowercase search
+          if (this.filteredList[i].toLowerCase().contains(widget.controller.text.toLowerCase())) {
+            // if there is a match, add to the temp list
+            tempList.add(this.filteredList[i]);
+          }
+        }
+        // if no items are found, add message none found
+        if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
+          tempList.add('No matching items');
+        }
+        setState(() {
+          // after loop is done, set the filteredList state from the tempList
+          this.filteredList = tempList;
+          this.loading = false;
+        });
+        // mark that the overlay widget needs to be rebuilt so results can show
+        this._overlayEntry.markNeedsBuild();
+      });
+    } else {
+      // reset the list if we ever have less than 2 characters
+      resetList();
+    }
   }
 
   void updateList() {
@@ -87,7 +92,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     }
     // if no items are found, add message none found
     if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
-      tempList.add('No matching styles');
+      tempList.add('No matching items');
     }
     if (widget.controller.text.isEmpty || widget.controller.text == ''){
       tempList = List();
@@ -109,8 +114,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     if (widget.label == null) {
       throw('Error: Missing required parameter: label');
     }
-    if (widget.initialList == null || widget.initialList.length == 0) {
-      throw('Error: Missing required initial list or initial list is empty array');
+    // throw error if we don't have an inital list or a future
+    if (widget.initialList == null && widget.future == null) {
+      throw('Error: Missing required initial list or future that returns list');
     }
     if (widget.future != null) {
       setState(() {
@@ -223,7 +229,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
             _debouncer.run(() {
               setState(() {
                 if (hasFuture) {
-                  loading = true;
                   updateGetItems();
                 } else {
                   updateList();

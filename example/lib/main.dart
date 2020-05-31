@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _printLatestValue() {
     print("text field: ${myController.text}");
+    print("text field: ${myController2.text}");
   }
 
   @override
@@ -99,7 +100,6 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               SizedBox(height: 16),
               TextFieldSearch(
-                  initialList: listOfStyles,
                   label: 'Brewery',
                   controller: myController2,
                   future: () {

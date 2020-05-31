@@ -74,7 +74,6 @@ Selection an option from a Future:
         MaterialApp(
           home: Scaffold(
           body: TextFieldSearch(
-              initialList: List(), 
               label: 'My Label', 
               controller: myController
               future: () {
