@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0
+5-31-2020
+- Added future parameter that allows for a Future that returns a list to be used
+- With the addition of the Future, users can now select an option from a list provided by a Future
+
 ## 0.4.0
 5-27-2020
 - Added required param textFieldController so addEventListener can be used on passed in controller
