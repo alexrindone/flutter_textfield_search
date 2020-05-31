@@ -1,9 +1,7 @@
 // EXAMPLE use case for TextFieldSearch Widget
 import 'package:flutter/material.dart';
 import 'package:textfield_search/textfield_search.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
-import 'dart:convert';
 
 void main() => runApp(MyApp());
 
