@@ -1,6 +1,7 @@
 // EXAMPLE use case for TextFieldSearch Widget
 import 'package:flutter/material.dart';
 import 'package:textfield_search/textfield_search.dart';
+import 'dart:async';
 
 void main() => runApp(MyApp());
 
@@ -42,15 +43,20 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   TextEditingController myController = TextEditingController();
+  TextEditingController myController2 = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
     myController.addListener(_printLatestValue);
+    myController2.addListener(_printLatestValue);
+
   }
 
   _printLatestValue() {
     print("text field: ${myController.text}");
+    print("text field: ${myController2.text}");
   }
 
   @override
@@ -58,7 +64,21 @@ class _MyHomePageState extends State<MyHomePage> {
     // Clean up the controller when the widget is removed from the
     // widget tree.
     myController.dispose();
+    myController2.dispose();
     super.dispose();
+  }
+
+  // mocking a future
+  Future<List> fetchData() async {
+    await Future.delayed(Duration(milliseconds: 5000));
+    List _list = new List();
+    String _inputText = myController2.text;
+    // create a list from the text input of three items
+    // to mock a list of items from an http call
+    _list.add(_inputText + ' Item 1');
+    _list.add(_inputText + ' Item 2');
+    _list.add(_inputText + ' Item 3');
+    return _list;
   }
 
   @override
@@ -77,10 +97,12 @@ class _MyHomePageState extends State<MyHomePage> {
           child: ListView(
             children: <Widget>[
               SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Brewery'
-                ),
+              TextFieldSearch(
+                  label: 'Brewery',
+                  controller: myController2,
+                  future: () {
+                    return fetchData();
+                  }
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -97,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
               TextFieldSearch(
                 initialList: listOfStyles,
                 label: 'Style',
-                controller: myController,
+                controller: myController
               ),
               SizedBox(height: 16),
               TextFormField(

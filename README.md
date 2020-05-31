@@ -45,6 +45,44 @@ To get the value of the selected option, use addListener on the controller to li
           print("Textfield value: ${myController.text}");
         }
 
+Selection an option from a Future:
+        
+        TextEditingController myController = TextEditingController();
+
+        // create a Future that returns List
+        Future<List> fetchData() async {
+          await Future.delayed(Duration(milliseconds: 5000));
+          List _list = new List();
+          String _inputText = myController.text;
+          // create a list from the text input of three items
+          // to mock a list of items from an http call
+          _list.add(_inputText + ' Item 1');
+          _list.add(_inputText + ' Item 2');
+          _list.add(_inputText + ' Item 3');
+          return _list;
+        }
+
+        @override
+        void dispose() {
+          // Clean up the controller when the widget is removed from the
+          // widget tree.
+          myController.dispose();
+          super.dispose();
+        }
+
+        // used within a MaterialApp (code shortened)
+        MaterialApp(
+          home: Scaffold(
+          body: TextFieldSearch(
+              label: 'My Label', 
+              controller: myController
+              future: () {
+                return fetchData();
+              }
+            )
+          ),
+        )
+
 ## Issues
 
 Please email any issues, bugs, or additional features you would like to see built to arindone@nubeer.io.
