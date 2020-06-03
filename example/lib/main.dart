@@ -29,34 +29,30 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final listOfStyles = [
-    'Stout',
-    'Oatmeal Stout',
-    'Chocolate Stout',
-    'Gose',
-    'IPA',
-    'New England IPA',
-    'India Pale Ale',
-    'Lager',
-    'Ale',
-    'Red Ale'
+  final _testList = [
+    'Test Item 1',
+    'Test Item 2',
+    'Test Item 3',
+    'Test Item 4',
   ];
 
   TextEditingController myController = TextEditingController();
   TextEditingController myController2 = TextEditingController();
-
+  TextEditingController myController3 = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     myController.addListener(_printLatestValue);
     myController2.addListener(_printLatestValue);
+    myController3.addListener(_printLatestValue);
 
   }
 
   _printLatestValue() {
     print("text field: ${myController.text}");
     print("text field: ${myController2.text}");
+    print("text field: ${myController3.text}");
   }
 
   @override
@@ -65,11 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // widget tree.
     myController.dispose();
     myController2.dispose();
+    myController3.dispose();
     super.dispose();
   }
 
   // mocking a future
-  Future<List> fetchData() async {
+  Future<List> fetchSimpleData() async {
     await Future.delayed(Duration(milliseconds: 5000));
     List _list = new List();
     String _inputText = myController2.text;
@@ -78,6 +75,36 @@ class _MyHomePageState extends State<MyHomePage> {
     _list.add(_inputText + ' Item 1');
     _list.add(_inputText + ' Item 2');
     _list.add(_inputText + ' Item 3');
+    return _list;
+  }
+
+  // mocking a future that returns List of Objects
+  Future<List> fetchComplexData() async {
+    await Future.delayed(Duration(milliseconds: 3000));
+    List _list = new List();
+    String _inputText = myController3.text;
+    List _jsonList = [
+      {
+        'label': _inputText + ' Item 1',
+        'value': 30
+      },
+      {
+        'label': _inputText + ' Item 2',
+        'value': 31
+      },
+      {
+        'label': _inputText + ' Item 3',
+        'value': 32
+      },
+    ];
+    // create a list from the text input of three items
+    // to mock a list of items from an http call where
+    // the label is what is seen in the textfield and something like an
+    // ID is the selected value
+    _list.add(new TestItem.fromJson(_jsonList[0]));
+    _list.add(new TestItem.fromJson(_jsonList[1]));
+    _list.add(new TestItem.fromJson(_jsonList[2]));
+
     return _list;
   }
 
@@ -98,17 +125,28 @@ class _MyHomePageState extends State<MyHomePage> {
             children: <Widget>[
               SizedBox(height: 16),
               TextFieldSearch(
-                  label: 'Brewery',
+                  label: 'Simple Future List',
                   controller: myController2,
                   future: () {
-                    return fetchData();
+                    return fetchSimpleData();
                   }
               ),
               SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Beer Name'
-                ),
+              TextFieldSearch(
+                label: 'Complex Future List',
+                controller: myController3,
+                future: () {
+                  return fetchComplexData();
+                },
+                getSelectedValue: (item) {
+                  print(item);
+                },
+              ),
+              SizedBox(height: 16),
+              TextFieldSearch(
+                initialList: _testList,
+                label: 'Simple List',
+                controller: myController
               ),
               SizedBox(height: 16),
               TextFormField(
@@ -116,27 +154,27 @@ class _MyHomePageState extends State<MyHomePage> {
                     labelText: 'Description'
                 ),
               ),
-              TextFieldSearch(
-                initialList: listOfStyles,
-                label: 'Style',
-                controller: myController
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'ABV.'
-                ),
-              ),
-              SizedBox(height: 16),
-              TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'IBU'
-                ),
-              ),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+// Mock Test Item Class
+class TestItem {
+  String label;
+  dynamic value;
+  TestItem({
+    this.label,
+    this.value
+  });
+
+  factory TestItem.fromJson(Map<String, dynamic> json) {
+    return TestItem(
+      label: json['label'],
+      value: json['value']
     );
   }
 }

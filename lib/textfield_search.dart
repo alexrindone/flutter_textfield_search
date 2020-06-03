@@ -8,12 +8,14 @@ class TextFieldSearch extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final Function future;
+  final Function getSelectedValue;
   const TextFieldSearch({
     Key key,
     this.initialList,
     @required this.label,
     @required this.controller,
     this.future,
+    this.getSelectedValue
   }) : super(key: key);
 
   @override
@@ -54,10 +56,17 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         // loop through each item in filtered items
         for (int i = 0; i < filteredList.length; i++) {
           // lowercase the item and see if the item contains the string of text from the lowercase search
-          if (this.filteredList[i].toLowerCase().contains(widget.controller.text.toLowerCase())) {
-            // if there is a match, add to the temp list
-            tempList.add(this.filteredList[i]);
-          }
+            if (widget.getSelectedValue != null) {
+              if (this.filteredList[i].label.toLowerCase().contains(widget.controller.text.toLowerCase())) {
+                // if there is a match, add to the temp list
+                tempList.add(this.filteredList[i]);
+              }
+            } else {
+              if (this.filteredList[i].toLowerCase().contains(widget.controller.text.toLowerCase())) {
+                // if there is a match, add to the temp list
+                tempList.add(this.filteredList[i]);
+              }
+            }
         }
         // if no items are found, add message none found
         if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
@@ -150,7 +159,14 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           onTap: (){
             // set the controller value to what was selected
             setState(() {
-              widget.controller.text = filteredList[i];
+              // if we have a label property, and getSelectedValue function
+              // send getSelectedValue to parent widget using the label property
+              if (widget.getSelectedValue != null) {
+                widget.controller.text = filteredList[i].label;
+                widget.getSelectedValue(filteredList[i]);
+              } else {
+                widget.controller.text = filteredList[i];
+              }
             });
             // reset the list so it's empty and not visible
             resetList();
@@ -158,7 +174,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
             FocusScope.of(context).unfocus();
           },
           child: ListTile(
-              title: Text(filteredList[i])
+              title: widget.getSelectedValue != null ? Text(filteredList[i].label) : Text(filteredList[i])
           ),
         );
       },
