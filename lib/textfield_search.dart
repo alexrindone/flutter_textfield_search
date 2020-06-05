@@ -36,9 +36,18 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     setState(() {
       // after loop is done, set the filteredList state from the tempList
       this.filteredList = tempList;
+      this.loading = false;
     });
     // mark that the overlay widget needs to be rebuilt
     this._overlayEntry.markNeedsBuild();
+  }
+
+  void setLoading() {
+    if (!this.loading) {
+      setState(() {
+        this.loading = true;
+      });
+    }
   }
 
   void updateGetItems(){
@@ -46,9 +55,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     // so loader can show
     this._overlayEntry.markNeedsBuild();
     if (widget.controller.text.length > 2) {
-      setState(() {
-        loading = true;
-      });
+      this.setLoading();
       widget.future().then((value) {
         this.filteredList = value;
         // create an empty temp list
@@ -109,6 +116,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     setState(() {
       // after loop is done, set the filteredList state from the tempList
       this.filteredList = tempList;
+      this.loading = false;
     });
     // mark that the overlay widget needs to be rebuilt
     this._overlayEntry.markNeedsBuild();
@@ -242,6 +250,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         ),
         onChanged: (String value) {
           // every time we make a change to the input, update the list
+            this.setLoading();
             _debouncer.run(() {
               setState(() {
                 if (hasFuture) {
