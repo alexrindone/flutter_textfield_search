@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.1
+6-5-2020
+- Updating README.md to include functionality giphy
+- Adding loading spinner on value change to show results are being loaded when user interacts with input
+
 ## 0.6.0
 6-3-2020
 - Added the ability to show a list of objects that have a required property of label (to display within the TextField)
