@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // mocking a future that returns List of Objects
   Future<List> fetchComplexData() async {
-    await Future.delayed(Duration(milliseconds: 2000));
+    await Future.delayed(Duration(milliseconds: 1000));
     List _list = new List();
     String _inputText = myController3.text;
     List _jsonList = [
