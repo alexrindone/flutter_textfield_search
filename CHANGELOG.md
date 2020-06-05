@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0
+6-3-2020
+- Added the ability to show a list of objects that have a required property of label (to display within the TextField)
+- Added getSelectedValue() callback function which returns the selected value which could be used to get an object instead of the TextField's value
+
 ## 0.5.0
 5-31-2020
 - Added future parameter that allows for a Future that returns a list to be used

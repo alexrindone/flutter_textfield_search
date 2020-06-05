@@ -47,7 +47,7 @@ To get the value of the selected option, use addListener on the controller to li
           print("Textfield value: ${myController.text}");
         }
 
-Selection an option from a Future:
+Selecting a List item from a Future List:
         
         TextEditingController myController = TextEditingController();
 
@@ -84,6 +84,79 @@ Selection an option from a Future:
             )
           ),
         )
+
+Selecting an object from a Future List:
+        
+        TextEditingController myController = TextEditingController();
+
+        // create a Future that returns List
+        // IMPORTANT: The list that gets returned from fetchData must have objects that have a label property.
+        // The label property is what is used to populate the TextField while getSelectedValue returns the actual object selected
+        Future<List> fetchData() async {
+          await Future.delayed(Duration(milliseconds: 3000));
+          List _list = new List();
+          String _inputText = myController.text;
+          List _jsonList = [
+            {
+              'label': _inputText + ' Item 1',
+              'value': 30
+            },
+            {
+              'label': _inputText + ' Item 2',
+              'value': 31
+            },
+            {
+              'label': _inputText + ' Item 3',
+              'value': 32
+            },
+          ];
+          // create a list of 3 objects from a fake json response
+          _list.add(new TestItem.fromJson(_jsonList[0]));
+          _list.add(new TestItem.fromJson(_jsonList[1]));
+          _list.add(new TestItem.fromJson(_jsonList[2]));
+          return _list;
+        }
+
+        @override
+        void dispose() {
+          // Clean up the controller when the widget is removed from the
+          // widget tree.
+          myController.dispose();
+          super.dispose();
+        }
+
+        // used within a MaterialApp (code shortened)
+        MaterialApp(
+          home: Scaffold(
+          body: TextFieldSearch(
+              label: 'My Label', 
+              controller: myController
+              future: () {
+                return fetchData();
+              },
+              getSelectedValue: (value) {
+                print(value); // this prints the selected option which could be an object
+              }
+            )
+          ),
+        )
+
+        // Mock Test Item Class
+        class TestItem {
+          String label;
+          dynamic value;
+          TestItem({
+            this.label,
+            this.value
+          });
+
+          factory TestItem.fromJson(Map<String, dynamic> json) {
+            return TestItem(
+              label: json['label'],
+              value: json['value']
+            );
+          }
+        }
 
 ## Issues
 
