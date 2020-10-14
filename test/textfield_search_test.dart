@@ -4,26 +4,32 @@ import 'package:textfield_search/textfield_search.dart';
 import 'dart:async';
 
 void main() {
-  testWidgets('TextFieldSearch has a list and label', (WidgetTester tester) async {
-    const List dummyList = [
-      'Item 1',
-      'Item 2'
-    ];
+  testWidgets('TextFieldSearch has a list and label',
+      (WidgetTester tester) async {
+    const List dummyList = ['Item 1', 'Item 2'];
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-        body: TextFieldSearch(key: testKey, initialList: dummyList, label: label, controller: myController,)
-      ),
+          body: TextFieldSearch(
+        key: testKey,
+        initialList: dummyList,
+        label: label,
+        controller: myController,
+      )),
     ));
     // find the TextField by it's type
     var foundTextField = find.byType(TextField);
     // enter some text for the TextField "Item"
     await tester.enterText(foundTextField, 'Item');
     // expect that the widget has focus after entering text
-    expect((foundTextField.evaluate().first.widget as TextField).focusNode.hasFocus, true);
+    expect(
+        (foundTextField.evaluate().first.widget as TextField)
+            .focusNode
+            .hasFocus,
+        true);
     // find the widget by the key
     expect(foundTextField, findsOneWidget);
     // find the widget by the entered text
@@ -46,10 +52,16 @@ void main() {
     // rebuild widget
     await tester.pumpAndSettle();
     // expect that we lost focus since we made a selection for the textfield
-    expect((foundTextField.evaluate().first.widget as TextField).focusNode.hasFocus, false);
+    expect(
+        (foundTextField.evaluate().first.widget as TextField)
+            .focusNode
+            .hasFocus,
+        false);
     // expect that foundTextField's value is the first selection, Item 1
     // since it was selected by the onTap gesture
-    expect((foundTextField.evaluate().first.widget as TextField).controller.text, 'Item 1');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        'Item 1');
     // rebuild widget
     await tester.pumpAndSettle();
     // remove everything from enter text so that list items are removed and empty
@@ -58,21 +70,33 @@ void main() {
     // textfield is empty
     expect(find.byType(GestureDetector), findsNothing);
     // expect that the textfield's value is blank since we set it to blank string
-    expect((foundTextField.evaluate().first.widget as TextField).controller.text, '');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        '');
     await tester.enterText(foundTextField, 'Item 3');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     var foundConstrainedBox = find.byType(ConstrainedBox);
     // Constrained Box constraints are infinity when running tests and goes off of biggest
-    expect((foundConstrainedBox.evaluate().first.widget as ConstrainedBox).constraints.biggest, BoxConstraints().biggest);
+    expect(
+        (foundConstrainedBox.evaluate().first.widget as ConstrainedBox)
+            .constraints
+            .biggest,
+        BoxConstraints().biggest);
     expect((tester.getSize(foundConstrainedBox.first)), Size(800, 600.0));
     expect(find.byType(ListTile, skipOffstage: false), findsOneWidget);
     expect(find.text('No matching items.'), findsOneWidget);
     await tester.enterText(find.text('Item 3'), '');
-    expect((find.byType(TextField).evaluate().first.widget as TextField).controller.text.isEmpty, true);
+    expect(
+        (find.byType(TextField).evaluate().first.widget as TextField)
+            .controller
+            .text
+            .isEmpty,
+        true);
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
   });
 
-  testWidgets('TextFieldSearch has a future that returns a List', (WidgetTester tester) async {
+  testWidgets('TextFieldSearch has a future that returns a List',
+      (WidgetTester tester) async {
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -88,25 +112,27 @@ void main() {
       _list.add(_inputText + ' Item 2');
       return _list;
     }
+
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
           body: TextFieldSearch(
-            key: testKey,
-            label: label,
-            controller: myController,
-            future: () {
-              return fetchData();
-            },
-          )
-      ),
+        key: testKey,
+        label: label,
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
     ));
 
     // find the TextField by it's type
     var foundTextField = find.byType(TextField);
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
-    expect((foundTextField.evaluate().first.widget as TextField).controller.text, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // expect that we have one CompositedTransformFollower
@@ -124,7 +150,8 @@ void main() {
     expect(find.text('Test Item 2'), findsOneWidget);
   });
 
-  testWidgets('TextFieldSearch has a future that returns no items', (WidgetTester tester) async {
+  testWidgets('TextFieldSearch has a future that returns no items',
+      (WidgetTester tester) async {
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -137,25 +164,27 @@ void main() {
       // to mock a list of items from an http call
       return _list;
     }
+
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
           body: TextFieldSearch(
-            key: testKey,
-            label: label,
-            controller: myController,
-            future: () {
-              return fetchData();
-            },
-          )
-      ),
+        key: testKey,
+        label: label,
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
     ));
 
     // find the TextField by it's type
     var foundTextField = find.byType(TextField);
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
-    expect((foundTextField.evaluate().first.widget as TextField).controller.text, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // expect that we have one CompositedTransformFollower
@@ -174,10 +203,10 @@ void main() {
     await tester.enterText(foundTextField, '');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     expect(find.byType(ListTile), findsNothing);
-
   });
 
-  testWidgets('TextFieldSearch has getSelectedValue', (WidgetTester tester) async {
+  testWidgets('TextFieldSearch has getSelectedValue',
+      (WidgetTester tester) async {
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -205,24 +234,25 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
           body: TextFieldSearch(
-            key: testKey,
-            label: label,
-            controller: myController,
-            future: () {
-              return fetchData();
-            },
-            getSelectedValue: (item) {
-              selectedItem = item.value;
-            },
-          )
-      ),
+        key: testKey,
+        label: label,
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+        getSelectedValue: (item) {
+          selectedItem = item.value;
+        },
+      )),
     ));
 
     // find the TextField by it's type
     var foundTextField = find.byType(TextField);
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
-    expect((foundTextField.evaluate().first.widget as TextField).controller.text, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // expect that we have one CompositedTransformFollower
@@ -246,26 +276,29 @@ void main() {
     expect(selectedItem, 30);
   });
 
-  testWidgets('Tap `No matching items` clears search input', (WidgetTester tester) async {
+  testWidgets('Tap `No matching items` clears search input',
+      (WidgetTester tester) async {
     // Enter text code...
-    const List dummyList = [
-      'Item 1',
-      'Item 2'
-    ];
+    const List dummyList = ['Item 1', 'Item 2'];
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-          body: TextFieldSearch(key: testKey, initialList: dummyList, label: label, controller: myController,)
-      ),
+          body: TextFieldSearch(
+        key: testKey,
+        initialList: dummyList,
+        label: label,
+        controller: myController,
+      )),
     ));
 
     await tester.enterText(find.byType(TextField), 'Test');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
-    TextField text = find.byType(TextField).evaluate().first.widget as TextField;
+    TextField text =
+        find.byType(TextField).evaluate().first.widget as TextField;
     expect(text.controller.text, 'Test');
 
     // Rebuild the widget after the state has changed.
@@ -278,26 +311,30 @@ void main() {
     expect(text.controller.text, '');
   });
 
-  testWidgets('Submit on keyboard when input doesn\'t match list item exactly clears input', (WidgetTester tester) async {
+  testWidgets(
+      'Submit on keyboard when input doesn\'t match list item exactly clears input',
+      (WidgetTester tester) async {
     // Enter text code...
-    const List dummyList = [
-      'Item 1',
-      'Item 2'
-    ];
+    const List dummyList = ['Item 1', 'Item 2'];
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
     // Build an app with the TextFieldSearch
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
-          body: TextFieldSearch(key: testKey, initialList: dummyList, label: label, controller: myController,)
-      ),
+          body: TextFieldSearch(
+        key: testKey,
+        initialList: dummyList,
+        label: label,
+        controller: myController,
+      )),
     ));
 
     await tester.enterText(find.byType(TextField), 'Item');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
     // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
-    TextField text = find.byType(TextField).evaluate().first.widget as TextField;
+    TextField text =
+        find.byType(TextField).evaluate().first.widget as TextField;
     expect(text.controller.text, 'Item');
 
     // Rebuild the widget after the state has changed.
@@ -312,7 +349,9 @@ void main() {
     expect(text.controller.text, '');
   });
 
-  testWidgets('Input clears when TextFieldSearch has getSelectedValue with label that doesn\'t match input', (WidgetTester tester) async {
+  testWidgets(
+      'Input clears when TextFieldSearch has getSelectedValue with label that doesn\'t match input',
+      (WidgetTester tester) async {
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
@@ -340,17 +379,16 @@ void main() {
     await tester.pumpWidget(MaterialApp(
       home: Scaffold(
           body: TextFieldSearch(
-            key: testKey,
-            label: label,
-            controller: myController,
-            future: () {
-              return fetchData();
-            },
-            getSelectedValue: (item) {
-              selectedItem = item.value;
-            },
-          )
-      ),
+        key: testKey,
+        label: label,
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+        getSelectedValue: (item) {
+          selectedItem = item.value;
+        },
+      )),
     ));
 
     // find the TextField by it's type
@@ -371,7 +409,8 @@ void main() {
     expect(text.controller.text, '');
   });
 
-  test('Debouncer executes function only once despite repeated calls', () async {
+  test('Debouncer executes function only once despite repeated calls',
+      () async {
     // test that debouncer waits for 1000ms before calling function
     Debouncer _debouncer = Debouncer(milliseconds: 1000);
     // expect that the value we pass for milliseconds is the same
@@ -382,13 +421,14 @@ void main() {
     void testFn() {
       _testList.add('Item');
     }
+
     // call the function immediately
     _debouncer.run(() => testFn());
     // since debounce is after 1000ms, the testList should still be empty
     expect(_testList.length, 0);
 
     // Call the function several times with 500ms between each call
-    for(var i = 0; i < 10; i++) {
+    for (var i = 0; i < 10; i++) {
       await Future.delayed(Duration(milliseconds: 500));
       _debouncer.run(() => testFn());
     }
@@ -398,21 +438,14 @@ void main() {
     expect(_testList.length, 1); // func called
     expect(_testList[0], 'Item');
   });
-
 }
 
 class TestItem {
   String label;
   dynamic value;
-  TestItem({
-    this.label,
-    this.value
-  });
+  TestItem({this.label, this.value});
 
   factory TestItem.fromJson(Map<String, dynamic> json) {
-    return TestItem(
-        label: json['label'],
-        value: json['value']
-    );
+    return TestItem(label: json['label'], value: json['value']);
   }
 }

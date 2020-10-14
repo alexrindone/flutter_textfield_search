@@ -46,7 +46,6 @@ class _MyHomePageState extends State<MyHomePage> {
     myController.addListener(_printLatestValue);
     myController2.addListener(_printLatestValue);
     myController3.addListener(_printLatestValue);
-
   }
 
   _printLatestValue() {
@@ -84,18 +83,9 @@ class _MyHomePageState extends State<MyHomePage> {
     List _list = new List();
     String _inputText = myController3.text;
     List _jsonList = [
-      {
-        'label': 'Text' + ' Item 1',
-        'value': 30
-      },
-      {
-        'label': 'Text' + ' Item 2',
-        'value': 31
-      },
-      {
-        'label': 'Text' + ' Item 3',
-        'value': 32
-      },
+      {'label': 'Text' + ' Item 1', 'value': 30},
+      {'label': 'Text' + ' Item 2', 'value': 31},
+      {'label': 'Text' + ' Item 3', 'value': 32},
     ];
     // create a list from the text input of three items
     // to mock a list of items from an http call where
@@ -129,8 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   controller: myController2,
                   future: () {
                     return fetchSimpleData();
-                  }
-              ),
+                  }),
               SizedBox(height: 16),
               TextFieldSearch(
                 label: 'Complex Future List',
@@ -144,15 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
               SizedBox(height: 16),
               TextFieldSearch(
-                initialList: _testList,
-                label: 'Simple List',
-                controller: myController
-              ),
+                  initialList: _testList,
+                  label: 'Simple List',
+                  controller: myController),
               SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(
-                    labelText: 'Description'
-                ),
+                decoration: InputDecoration(labelText: 'Description'),
               ),
             ],
           ),
@@ -166,15 +152,10 @@ class _MyHomePageState extends State<MyHomePage> {
 class TestItem {
   String label;
   dynamic value;
-  TestItem({
-    this.label,
-    this.value
-  });
+
+  TestItem({this.label, this.value});
 
   factory TestItem.fromJson(Map<String, dynamic> json) {
-    return TestItem(
-      label: json['label'],
-      value: json['value']
-    );
+    return TestItem(label: json['label'], value: json['value']);
   }
 }
