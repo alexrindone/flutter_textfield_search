@@ -30,6 +30,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   bool hasFuture = false;
   bool loading = false;
   final _debouncer = Debouncer(milliseconds: 1000);
+  bool itemsFound;
 
   void resetList() {
     List tempList = new List();
@@ -50,6 +51,18 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     }
   }
 
+  void resetState(List tempList) {
+    setState(() {
+      // after loop is done, set the filteredList state from the tempList
+      this.filteredList = tempList;
+      this.loading = false;
+      // if no items are found, add message none found
+      itemsFound = tempList.length == 0 && widget.controller.text.isNotEmpty ? false : true;
+    });
+    // mark that the overlay widget needs to be rebuilt so results can show
+    this._overlayEntry.markNeedsBuild();
+  }
+
   void updateGetItems(){
     // mark that the overlay widget needs to be rebuilt
     // so loader can show
@@ -62,7 +75,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         List tempList = new List();
         // loop through each item in filtered items
         for (int i = 0; i < filteredList.length; i++) {
-          // lowercase the item and see if the item contains the string of text from the lowercase search
+            // lowercase the item and see if the item contains the string of text from the lowercase search
             if (widget.getSelectedValue != null) {
               if (this.filteredList[i].label.toLowerCase().contains(widget.controller.text.toLowerCase())) {
                 // if there is a match, add to the temp list
@@ -75,17 +88,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
               }
             }
         }
-        // if no items are found, add message none found
-        if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
-          tempList.add('No matching items');
-        }
-        setState(() {
-          // after loop is done, set the filteredList state from the tempList
-          this.filteredList = tempList;
-          this.loading = false;
-        });
-        // mark that the overlay widget needs to be rebuilt so results can show
-        this._overlayEntry.markNeedsBuild();
+        // helper function to set tempList and other state props
+        this.resetState(tempList);
       });
     } else {
       // reset the list if we ever have less than 2 characters
@@ -106,20 +110,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         tempList.add(this.filteredList[i]);
       }
     }
-    // if no items are found, add message none found
-    if (tempList.length == 0 && widget.controller.text.isNotEmpty) {
-      tempList.add('No matching items');
-    }
-    if (widget.controller.text.isEmpty || widget.controller.text == ''){
-      tempList = List();
-    }
-    setState(() {
-      // after loop is done, set the filteredList state from the tempList
-      this.filteredList = tempList;
-      this.loading = false;
-    });
-    // mark that the overlay widget needs to be rebuilt
-    this._overlayEntry.markNeedsBuild();
+    // helper function to set tempList and other state props
+    this.resetState(tempList);
   }
 
   void initState() {
@@ -148,6 +140,26 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         Overlay.of(context).insert(this._overlayEntry);
       } else {
         this._overlayEntry.remove();
+        // check to see if itemsFound is false, if it is clear the input
+        // check to see if we are currently loading items when keyboard exists, and clear the input
+        if (itemsFound == false || loading == true) {
+          // reset the list so it's empty and not visible
+          resetList();
+          widget.controller.clear();
+        }
+        // if we have a list of items, make sure the text input matches one of them
+        // if not, clear the input
+        if (filteredList.length > 0) {
+          bool textMatchesItem = false;
+          if (widget.getSelectedValue != null) {
+            // try to match the label against what is set on controller
+            textMatchesItem = filteredList.any((item) => item.label == widget.controller.text);
+          } else {
+            textMatchesItem = filteredList.contains(widget.controller.text);
+          }
+          if (textMatchesItem == false) widget.controller.clear(); resetList();
+        }
+
       }
     });
   }
@@ -160,6 +172,31 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   }
   
   ListView _listViewBuilder(context) {
+    if (itemsFound == false) {
+      return ListView(
+        padding: EdgeInsets.zero,
+        shrinkWrap: true,
+        children: <Widget>[
+          GestureDetector(
+            onTap: () {
+              // clear the text field controller to reset it
+              widget.controller.clear();
+              setState(() {
+                itemsFound = false;
+              });
+              // reset the list so it's empty and not visible
+              resetList();
+              // remove the focus node so we aren't editing the text
+              FocusScope.of(context).unfocus();
+            },
+            child: ListTile(
+              title: Text('No matching items.'),
+              trailing: Icon(Icons.cancel),
+            ),
+          ),
+        ],
+      );
+    }
     return ListView.builder(
       itemCount: filteredList.length,
       itemBuilder: (context, i){
@@ -183,7 +220,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           },
           child: ListTile(
               title: widget.getSelectedValue != null ? Text(filteredList[i].label) : Text(filteredList[i])
-          ),
+          )
         );
       },
       padding: EdgeInsets.zero,
@@ -203,6 +240,17 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     );
   }
 
+  Widget _listViewContainer(context) {
+    if (itemsFound == true && filteredList.length > 0 || itemsFound == false && widget.controller.text.length > 0) {
+      double _height = itemsFound == true && filteredList.length > 1 ? 110 : 55;
+      return Container(
+        height: _height,
+        child: _listViewBuilder(context),
+      );
+    }
+    return null;
+  }
+
   OverlayEntry _createOverlayEntry() {
 
     RenderBox renderBox = context.findRenderObject();
@@ -211,8 +259,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     double y = position.dy; // get y coordinate
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
-    double screenHeight = screenSize.height;
-    const BOTTOM_OFFSET = 75;
     return OverlayEntry(
         builder: (context) => Positioned(
           width: overlaySize.width,
@@ -227,10 +273,10 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                     minWidth: screenWidth,
                     maxWidth: screenWidth,
                     minHeight: 0,
-                    // make sure we have a max dynamic height of 400
-                    maxHeight: (screenHeight - y) - BOTTOM_OFFSET > 400 ? 400 : (screenHeight - y) - BOTTOM_OFFSET,
+                    // max height set to 150
+                    maxHeight: itemsFound == true ? 110 : 55,
                 ),
-                child: loading ? _loadingIndicator() : _listViewBuilder(context)
+                child: loading ? _loadingIndicator() : _listViewContainer(context)
               ),
             ),
           ),

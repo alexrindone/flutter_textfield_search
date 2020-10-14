@@ -72,9 +72,9 @@ class _MyHomePageState extends State<MyHomePage> {
     String _inputText = myController2.text;
     // create a list from the text input of three items
     // to mock a list of items from an http call
-    _list.add(_inputText + ' Item 1');
-    _list.add(_inputText + ' Item 2');
-    _list.add(_inputText + ' Item 3');
+    _list.add('Text' + ' Item 1');
+    _list.add('Test' + ' Item 2');
+    _list.add('Test' + ' Item 3');
     return _list;
   }
 
@@ -85,15 +85,15 @@ class _MyHomePageState extends State<MyHomePage> {
     String _inputText = myController3.text;
     List _jsonList = [
       {
-        'label': _inputText + ' Item 1',
+        'label': 'Text' + ' Item 1',
         'value': 30
       },
       {
-        'label': _inputText + ' Item 2',
+        'label': 'Text' + ' Item 2',
         'value': 31
       },
       {
-        'label': _inputText + ' Item 3',
+        'label': 'Text' + ' Item 3',
         'value': 32
       },
     ];
