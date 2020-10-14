@@ -355,12 +355,10 @@ void main() {
     const String label = 'Test Label';
     const Key testKey = Key('K');
     final TextEditingController myController = TextEditingController();
-    dynamic selectedItem;
     // mocking a future that returns List of Objects
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
       List _list = new List();
-      String _inputText = myController.text;
       List _jsonList = [
         {'label': 'Test Item 1', 'value': 30},
         {'label': 'Test Item 2', 'value': 31},
@@ -386,7 +384,7 @@ void main() {
           return fetchData();
         },
         getSelectedValue: (item) {
-          selectedItem = item.value;
+          print(item);
         },
       )),
     ));

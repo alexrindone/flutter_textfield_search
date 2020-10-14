@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List> fetchSimpleData() async {
     await Future.delayed(Duration(milliseconds: 2000));
     List _list = new List();
-    String _inputText = myController2.text;
     // create a list from the text input of three items
     // to mock a list of items from an http call
     _list.add('Text' + ' Item 1');
@@ -81,7 +80,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<List> fetchComplexData() async {
     await Future.delayed(Duration(milliseconds: 1000));
     List _list = new List();
-    String _inputText = myController3.text;
     List _jsonList = [
       {'label': 'Text' + ' Item 1', 'value': 30},
       {'label': 'Text' + ' Item 2', 'value': 31},

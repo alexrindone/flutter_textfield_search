@@ -271,9 +271,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   OverlayEntry _createOverlayEntry() {
     RenderBox renderBox = context.findRenderObject();
     Size overlaySize = renderBox.size;
-    Offset position = renderBox
-        .localToGlobal(Offset.zero); // get global position of renderBox
-    double y = position.dy; // get y coordinate
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     return OverlayEntry(
