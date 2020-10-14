@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.7.0
+10-13-2020
+- Fixing issue Class 'String' has no instance getter 'label' when 'No matching items.' is shown
+- Fixing test cases to check for when 'No matching items.' is found
+- Added functionality to clear the input if a user submits a TextField that doesn't match an item in the list
+- Added functionality to clear the input if a user submits a TextField as the list is currently loading
+
 ## 0.6.1
 6-5-2020
 - Updating README.md to include functionality giphy
