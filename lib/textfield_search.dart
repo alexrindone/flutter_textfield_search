@@ -10,15 +10,19 @@ class TextFieldSearch extends StatefulWidget {
   final TextEditingController controller;
   final Function future;
   final Function getSelectedValue;
+  final InputDecoration decoration;
+  final TextStyle textStyle;
 
-  const TextFieldSearch(
-      {Key key,
-      this.initialList,
-      @required this.label,
-      @required this.controller,
-      this.future,
-      this.getSelectedValue})
-      : super(key: key);
+  const TextFieldSearch({
+    Key key,
+    this.initialList,
+    @required this.label,
+    @required this.controller,
+    this.future,
+    this.getSelectedValue,
+    this.decoration,
+    this.textStyle
+  }) : super(key: key);
 
   @override
   _TextFieldSearchState createState() => _TextFieldSearchState();
@@ -305,7 +309,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       child: TextField(
         controller: widget.controller,
         focusNode: this._focusNode,
-        decoration: InputDecoration(labelText: widget.label),
+        style: widget.textStyle,
+        decoration: widget.decoration,
         onChanged: (String value) {
           // every time we make a change to the input, update the list
           this.setLoading();
