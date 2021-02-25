@@ -19,7 +19,7 @@ class TextFieldSearch extends StatefulWidget {
       @required this.controller,
       this.future,
       this.getSelectedValue,
-      int amountOfCharacters = 3})
+      int amountOfCharacters = 2})
       : this.amountOfCharacters = amountOfCharacters,
         super(key: key);
 
