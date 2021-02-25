@@ -10,6 +10,7 @@ class TextFieldSearch extends StatefulWidget {
   final TextEditingController controller;
   final Function future;
   final Function getSelectedValue;
+  final int amountOfCharacters;
 
   const TextFieldSearch(
       {Key key,
@@ -17,7 +18,8 @@ class TextFieldSearch extends StatefulWidget {
       @required this.label,
       @required this.controller,
       this.future,
-      this.getSelectedValue})
+      this.getSelectedValue,
+      this.amountOfCharacters = 3})
       : super(key: key);
 
   @override
@@ -31,6 +33,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   List filteredList = new List();
   bool hasFuture = false;
   bool loading = false;
+
   final _debouncer = Debouncer(milliseconds: 1000);
   bool itemsFound;
 
@@ -71,7 +74,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     // mark that the overlay widget needs to be rebuilt
     // so loader can show
     this._overlayEntry.markNeedsBuild();
-    if (widget.controller.text.length > 2) {
+    if (widget.controller.text.length > widget.amountOfCharacters) {
       this.setLoading();
       widget.future().then((value) {
         this.filteredList = value;
