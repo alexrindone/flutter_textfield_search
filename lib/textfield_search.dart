@@ -19,8 +19,9 @@ class TextFieldSearch extends StatefulWidget {
       @required this.controller,
       this.future,
       this.getSelectedValue,
-      this.amountOfCharacters = 3})
-      : super(key: key);
+      int amountOfCharacters = 3})
+      : this.amountOfCharacters = amountOfCharacters,
+        super(key: key);
 
   @override
   _TextFieldSearchState createState() => _TextFieldSearchState();
