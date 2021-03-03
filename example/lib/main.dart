@@ -128,6 +128,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 getSelectedValue: (item) {
                   print(item);
                 },
+                minStringLength: 5,
+                textStyle: TextStyle(color: Colors.red),
+                decoration: InputDecoration(hintText: 'Search For Something'),
               ),
               SizedBox(height: 16),
               TextFieldSearch(

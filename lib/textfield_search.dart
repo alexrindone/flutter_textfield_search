@@ -10,14 +10,20 @@ class TextFieldSearch extends StatefulWidget {
   final TextEditingController controller;
   final Function future;
   final Function getSelectedValue;
+  final InputDecoration decoration;
+  final TextStyle textStyle;
+  final int minStringLength;
 
   const TextFieldSearch(
       {Key key,
       this.initialList,
       @required this.label,
       @required this.controller,
+      this.textStyle,
       this.future,
-      this.getSelectedValue})
+      this.getSelectedValue,
+      this.decoration,
+      this.minStringLength = 2 })
       : super(key: key);
 
   @override
@@ -71,7 +77,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     // mark that the overlay widget needs to be rebuilt
     // so loader can show
     this._overlayEntry.markNeedsBuild();
-    if (widget.controller.text.length > 2) {
+    if (widget.controller.text.length > widget.minStringLength) {
       this.setLoading();
       widget.future().then((value) {
         this.filteredList = value;
@@ -109,6 +115,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   }
 
   void updateList() {
+    this.setLoading();
     // set the filtered list using the initial list
     this.filteredList = widget.initialList;
     // create an empty temp list
@@ -305,10 +312,10 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       child: TextField(
         controller: widget.controller,
         focusNode: this._focusNode,
-        decoration: InputDecoration(labelText: widget.label),
+        decoration: widget.decoration != null ? widget.decoration : InputDecoration(labelText: widget.label),
+        style: widget.textStyle,
         onChanged: (String value) {
           // every time we make a change to the input, update the list
-          this.setLoading();
           _debouncer.run(() {
             setState(() {
               if (hasFuture) {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.0
+3-3-2021
+- Added minStringLength which allows for setting a minimum query string length before executing search
+- Added support for InputDecoration through decoration
+- Added support for TextStyle through textStyle
+
 ## 0.7.0
 10-13-2020
 - Fixing issue Class 'String' has no instance getter 'label' when 'No matching items.' is shown
