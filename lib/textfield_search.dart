@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-
-// stuff for debouncing
-import 'package:flutter/foundation.dart';
 import 'dart:async';
 
 class TextFieldSearch extends StatefulWidget {
@@ -34,14 +31,14 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   final FocusNode _focusNode = FocusNode();
   late OverlayEntry _overlayEntry;
   final LayerLink _layerLink = LayerLink();
-  List? filteredList = new List();
+  List? filteredList = <dynamic>[];
   bool hasFuture = false;
   bool loading = false;
   final _debouncer = Debouncer(milliseconds: 1000);
   bool? itemsFound;
 
   void resetList() {
-    List tempList = new List();
+    List tempList = <dynamic>[];
     setState(() {
       // after loop is done, set the filteredList state from the tempList
       this.filteredList = tempList;
@@ -82,7 +79,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       widget.future!().then((value) {
         this.filteredList = value;
         // create an empty temp list
-        List tempList = new List();
+        List tempList = <dynamic>[];
         // loop through each item in filtered items
         for (int i = 0; i < filteredList!.length; i++) {
           // lowercase the item and see if the item contains the string of text from the lowercase search
@@ -119,7 +116,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     // set the filtered list using the initial list
     this.filteredList = widget.initialList;
     // create an empty temp list
-    List tempList = new List();
+    List tempList = <dynamic>[];
     // loop through each item in filtered items
     for (int i = 0; i < filteredList!.length; i++) {
       // lowercase the item and see if the item contains the string of text from the lowercase search
@@ -137,14 +134,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   void initState() {
     super.initState();
-    // adding error handling for required params
-    if (widget.controller == null) {
-      throw ('Error: Missing required parameter: controller');
-    }
-    if (widget.label == null) {
-      throw ('Error: Missing required parameter: label');
-    }
-    // throw error if we don't have an inital list or a future
+
+    // throw error if we don't have an initial list or a future
     if (widget.initialList == null && widget.future == null) {
       throw ('Error: Missing required initial list or future that returns list');
     }
@@ -257,7 +248,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       child: Center(
         child: CircularProgressIndicator(
           valueColor:
-              AlwaysStoppedAnimation<Color>(Theme.of(context).accentColor),
+              AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
         ),
       ),
     );

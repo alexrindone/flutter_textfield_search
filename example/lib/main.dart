@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, this.title = 'My Home Page'}) : super(key: key);
 
   final String title;
 
@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // mocking a future
   Future<List> fetchSimpleData() async {
     await Future.delayed(Duration(milliseconds: 2000));
-    List _list = new List();
+    List _list = <dynamic>[];
     // create a list from the text input of three items
     // to mock a list of items from an http call
     _list.add('Text' + ' Item 1');
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // mocking a future that returns List of Objects
   Future<List> fetchComplexData() async {
     await Future.delayed(Duration(milliseconds: 1000));
-    List _list = new List();
+    List _list = <dynamic>[];
     List _jsonList = [
       {'label': 'Text' + ' Item 1', 'value': 30},
       {'label': 'Text' + ' Item 2', 'value': 31},
@@ -151,10 +151,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
 // Mock Test Item Class
 class TestItem {
-  String label;
+  final String label;
   dynamic value;
 
-  TestItem({this.label, this.value});
+  TestItem({required this.label, this.value});
 
   factory TestItem.fromJson(Map<String, dynamic> json) {
     return TestItem(label: json['label'], value: json['value']);
