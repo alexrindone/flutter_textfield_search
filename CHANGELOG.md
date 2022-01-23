@@ -1,5 +1,4 @@
 # Changelog
-<<<<<<< HEAD
 ## 0.9.1
 1-22-2022
 - Added documentation leveraging dartdoc
