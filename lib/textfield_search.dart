@@ -269,6 +269,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         itemsFound == false && widget.controller.text.length > 0) {
       double _height =
           itemsFound == true && filteredList!.length > 1 ? 110 : 55;
+
       return Container(
         height: _height,
         child: _listViewBuilder(context),
