@@ -1,4 +1,8 @@
 # Changelog
+## 0.9.2
+1-22-2022
+- Fixing formatting
+
 ## 0.9.1
 1-22-2022
 - Added documentation leveraging dartdoc
