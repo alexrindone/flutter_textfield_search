@@ -4,18 +4,25 @@ import 'dart:async';
 class TextFieldSearch extends StatefulWidget {
   /// A default list of values that can be used for an initial list of elements to select from
   final List? initialList;
+
   /// A string used for display of the selectable elements
   final String label;
+
   /// A controller for an editable text field
   final TextEditingController controller;
+
   /// An optional future or async function that should return a list of selectable elements
   final Function? future;
+
   /// The value selected on tap of an element within the list
   final Function? getSelectedValue;
+
   /// Used for customizing the display of the TextField
   final InputDecoration? decoration;
+
   /// Used for customizing the style of the text within the TextField
   final TextStyle? textStyle;
+
   /// The minimum length of characters to be entered into the TextField before executing a search
   final int minStringLength;
 
@@ -338,8 +345,10 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 class Debouncer {
   /// A length of time in milliseconds used to delay a function call
   final int? milliseconds;
+
   /// A callback function to execute
   VoidCallback? action;
+
   /// A count-down timer that can be configured to fire once or repeatedly.
   Timer? _timer;
 
