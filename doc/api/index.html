@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 4.1.0">
+  <meta name="description" content="textfield_search API docs, for the Dart programming language.">
+  <title>textfield_search - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://github.com/alexrindone/flutter_textfield_search">textfield_search package</a></li>
+  </ol>
+  <div class="self-name">textfield_search</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="flutter_textfield_search">flutter_textfield_search</h1>
+<p><img src="https://github.com/alexrindone/flutter_textfield_search/workflows/Build%20and%20Tests/badge.svg" alt="Build and Test"></p>
+<p>FTFS is a Flutter package which uses a TextField Widget to search and select a value from a list. It's a simple, lightweight, and fully tested package unlike other "autocomplete" or textfield search packages. View complete code coverage results in JSON format  <strong><a href="https://raw.githubusercontent.com/alexrindone/flutter_textfield_search/master/coverage/coverage.json">here</a></strong>.</p><img src="https://i.imgur.com/lXmQghw.gif">
+<h2 id="usage">Usage</h2>
+<p>To use this package, add flutter_textfield_search as a dependency in your pubsec.yaml file.</p>
+<h2 id="example">Example</h2>
+<p>Import the package.</p>
+<pre class="language-dart"><code>`import 'package:flutter_textfield_search/search.dart'`;
+</code></pre>
+<p>Then include the widget anywhere you would normally use a TextField widget with a String for label, a List for initialList, and a TextEditingController for controller.
+<br>Example MaterialApp using TextFieldSearch Widget
+<br></p>
+<pre class="language-dart"><code>    const label = "Some Label";
+    const dummyList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+    TextEditingController myController = TextEditingController();
+    MaterialApp(
+      home: Scaffold(
+      body: TextFieldSearch(initialList: dummyList, label: label, controller: myController)
+      ),
+    )
+    
+</code></pre>
+<p>To get the value of the selected option, use addListener on the controller to listen for changes:</p>
+<pre class="language-dart"><code>    @override
+    void dispose() {
+      // Clean up the controller when the widget is removed from the
+      // widget tree.
+      myController.dispose();
+      super.dispose();
+    }
+
+    @override
+    void initState() {
+      super.initState();
+      // Start listening to changes.
+      myController.addListener(_printLatestValue);
+    }
+    
+    _printLatestValue() {
+      print("Textfield value: ${myController.text}");
+    }
+</code></pre>
+<p>Selecting a List item from a Future List:</p>
+<pre class="language-dart"><code>    TextEditingController myController = TextEditingController();
+
+    // create a Future that returns List
+    Future&lt;List&gt; fetchData() async {
+      await Future.delayed(Duration(milliseconds: 5000));
+      List _list = new List();
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      _list.add(_inputText + ' Item 1');
+      _list.add(_inputText + ' Item 2');
+      _list.add(_inputText + ' Item 3');
+      return _list;
+    }
+
+    @override
+    void dispose() {
+      // Clean up the controller when the widget is removed from the
+      // widget tree.
+      myController.dispose();
+      super.dispose();
+    }
+
+    // used within a MaterialApp (code shortened)
+    MaterialApp(
+      home: Scaffold(
+      body: TextFieldSearch(
+          label: 'My Label', 
+          controller: myController
+          future: () {
+            return fetchData();
+          }
+        )
+      ),
+    )
+</code></pre>
+<p>Selecting an object from a Future List:</p>
+<pre class="language-dart"><code>    TextEditingController myController = TextEditingController();
+
+    // create a Future that returns List
+    // IMPORTANT: The list that gets returned from fetchData must have objects that have a label property.
+    // The label property is what is used to populate the TextField while getSelectedValue returns the actual object selected
+    Future&lt;List&gt; fetchData() async {
+      await Future.delayed(Duration(milliseconds: 3000));
+      List _list = new List();
+      String _inputText = myController.text;
+      List _jsonList = [
+        {
+          'label': _inputText + ' Item 1',
+          'value': 30
+        },
+        {
+          'label': _inputText + ' Item 2',
+          'value': 31
+        },
+        {
+          'label': _inputText + ' Item 3',
+          'value': 32
+        },
+      ];
+      // create a list of 3 objects from a fake json response
+      _list.add(new TestItem.fromJson(_jsonList[0]));
+      _list.add(new TestItem.fromJson(_jsonList[1]));
+      _list.add(new TestItem.fromJson(_jsonList[2]));
+      return _list;
+    }
+
+    @override
+    void dispose() {
+      // Clean up the controller when the widget is removed from the
+      // widget tree.
+      myController.dispose();
+      super.dispose();
+    }
+
+    // used within a MaterialApp (code shortened)
+    MaterialApp(
+      home: Scaffold(
+      body: TextFieldSearch(
+          label: 'My Label', 
+          controller: myController
+          future: () {
+            return fetchData();
+          },
+          getSelectedValue: (value) {
+            print(value); // this prints the selected option which could be an object
+          }
+        )
+      ),
+    )
+
+    // Mock Test Item Class
+    class TestItem {
+      String label;
+      dynamic value;
+      TestItem({
+        this.label,
+        this.value
+      });
+
+      factory TestItem.fromJson(Map&lt;String, dynamic&gt; json) {
+        return TestItem(
+          label: json['label'],
+          value: json['value']
+        );
+      }
+    }
+</code></pre>
+<h2 id="issues">Issues</h2>
+<p>Please email any issues, bugs, or additional features you would like to see built to arindone@nubeer.io.</p>
+<h2 id="contributing">Contributing</h2>
+<p>If you wish to contribute to this package you may fork the repository and make a pull request to this repository.
+<br><br><strong>Note</strong>: Testing by running <code>flutter test --coverage</code> will generate <code>coverage/lcov.info</code>. Running <code>bash test-coverage.sh</code> will parse the <code>lcov.info</code> file into JSON format. This happens automatically within the CI/CD pipeline on a pull request to master but it is always good to test locally.</p>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="textfield_search">
+  <span class="name"><a href="textfield_search/textfield_search-library.html">textfield_search</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="https://github.com/alexrindone/flutter_textfield_search">textfield_search package</a></li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">textfield_search</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="textfield_search/textfield_search-library.html">textfield_search</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    textfield_search
+      0.9.0
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

@@ -2,15 +2,24 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class TextFieldSearch extends StatefulWidget {
+  /// A default list of values that can be used for an initial list of elements to select from
   final List? initialList;
+  /// A string used for display of the selectable elements
   final String label;
+  /// A controller for an editable text field
   final TextEditingController controller;
+  /// An optional future or async function that should return a list of selectable elements
   final Function? future;
+  /// The value selected on tap of an element within the list
   final Function? getSelectedValue;
+  /// Used for customizing the display of the TextField
   final InputDecoration? decoration;
+  /// Used for customizing the style of the text within the TextField
   final TextStyle? textStyle;
+  /// The minimum length of characters to be entered into the TextField before executing a search
   final int minStringLength;
 
+  /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
       this.initialList,
@@ -20,7 +29,7 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.decoration,
-      this.minStringLength = 2 })
+      this.minStringLength = 2})
       : super(key: key);
 
   @override
@@ -241,14 +250,15 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     );
   }
 
+  /// A default loading indicator to display when executing a Future
   Widget _loadingIndicator() {
     return Container(
       width: 50,
       height: 50,
       child: Center(
         child: CircularProgressIndicator(
-          valueColor:
-              AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
+          valueColor: AlwaysStoppedAnimation<Color>(
+              Theme.of(context).colorScheme.secondary),
         ),
       ),
     );
@@ -257,7 +267,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.length > 0 ||
         itemsFound == false && widget.controller.text.length > 0) {
-      double _height = itemsFound == true && filteredList!.length > 1 ? 110 : 55;
+      double _height =
+          itemsFound == true && filteredList!.length > 1 ? 110 : 55;
       return Container(
         height: _height,
         child: _listViewBuilder(context),
@@ -303,7 +314,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       child: TextField(
         controller: widget.controller,
         focusNode: this._focusNode,
-        decoration: widget.decoration != null ? widget.decoration : InputDecoration(labelText: widget.label),
+        decoration: widget.decoration != null
+            ? widget.decoration
+            : InputDecoration(labelText: widget.label),
         style: widget.textStyle,
         onChanged: (String value) {
           // every time we make a change to the input, update the list
@@ -323,10 +336,14 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 }
 
 class Debouncer {
+  /// A length of time in milliseconds used to delay a function call
   final int? milliseconds;
+  /// A callback function to execute
   VoidCallback? action;
+  /// A count-down timer that can be configured to fire once or repeatedly.
   Timer? _timer;
 
+  /// Creates a Debouncer that executes a function after a certain length of time in milliseconds
   Debouncer({this.milliseconds});
 
   run(VoidCallback action) {
