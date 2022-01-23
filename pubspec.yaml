@@ -1,10 +1,10 @@
 name: textfield_search
 description: A new Flutter package which uses a TextField to search and select it's value from a simple list.
 homepage: https://github.com/alexrindone/flutter_textfield_search
-version: 0.8.0
+version: 0.9.0
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:

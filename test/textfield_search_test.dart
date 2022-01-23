@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:textfield_search/textfield_search.dart';
-import 'dart:async';
 
 void main() {
   testWidgets('TextFieldSearch has a list and label',
@@ -28,7 +27,7 @@ void main() {
     expect(
         (foundTextField.evaluate().first.widget as TextField)
             .focusNode
-            .hasFocus,
+            ?.hasFocus,
         true);
     // find the widget by the key
     expect(foundTextField, findsOneWidget);
@@ -55,12 +54,12 @@ void main() {
     expect(
         (foundTextField.evaluate().first.widget as TextField)
             .focusNode
-            .hasFocus,
+            ?.hasFocus,
         false);
     // expect that foundTextField's value is the first selection, Item 1
     // since it was selected by the onTap gesture
     expect(
-        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
         'Item 1');
     // rebuild widget
     await tester.pumpAndSettle();
@@ -71,7 +70,7 @@ void main() {
     expect(find.byType(GestureDetector), findsNothing);
     // expect that the textfield's value is blank since we set it to blank string
     expect(
-        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
         '');
     await tester.enterText(foundTextField, 'Item 3');
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -89,7 +88,7 @@ void main() {
     expect(
         (find.byType(TextField).evaluate().first.widget as TextField)
             .controller
-            .text
+            ?.text
             .isEmpty,
         true);
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -104,7 +103,7 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 5000));
-      List _list = new List();
+      List _list = <dynamic>[];
       String _inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
@@ -131,7 +130,7 @@ void main() {
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
     expect(
-        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -159,7 +158,7 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = new List();
+      List _list = <dynamic>[];
       // create a list that returns no results
       // to mock a list of items from an http call
       return _list;
@@ -183,7 +182,7 @@ void main() {
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
     expect(
-        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -214,7 +213,7 @@ void main() {
     // mocking a future that returns List of Objects
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = new List();
+      List _list = <dynamic>[];
       String _inputText = myController.text;
       List _jsonList = [
         {'label': _inputText + ' Item 1', 'value': 30},
@@ -251,7 +250,7 @@ void main() {
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test');
     expect(
-        (foundTextField.evaluate().first.widget as TextField).controller.text,
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -299,7 +298,7 @@ void main() {
     // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
     TextField text =
         find.byType(TextField).evaluate().first.widget as TextField;
-    expect(text.controller.text, 'Test');
+    expect(text.controller?.text, 'Test');
 
     // Rebuild the widget after the state has changed.
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -308,7 +307,7 @@ void main() {
     await tester.tap(find.text('No matching items.'));
     text = find.byType(TextField).evaluate().first.widget as TextField;
     // Expect to find controller is cleared and set to an empty string
-    expect(text.controller.text, '');
+    expect(text.controller?.text, '');
   });
 
   testWidgets(
@@ -335,7 +334,7 @@ void main() {
     // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
     TextField text =
         find.byType(TextField).evaluate().first.widget as TextField;
-    expect(text.controller.text, 'Item');
+    expect(text.controller?.text, 'Item');
 
     // Rebuild the widget after the state has changed.
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
@@ -346,7 +345,7 @@ void main() {
 
     text = find.byType(TextField).evaluate().first.widget as TextField;
     // Expect to find controller is cleared and set to an empty string
-    expect(text.controller.text, '');
+    expect(text.controller?.text, '');
   });
 
   testWidgets(
@@ -358,7 +357,7 @@ void main() {
     // mocking a future that returns List of Objects
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = new List();
+      List _list = <dynamic>[];
       List _jsonList = [
         {'label': 'Test Item 1', 'value': 30},
         {'label': 'Test Item 2', 'value': 31},
@@ -394,7 +393,7 @@ void main() {
     // enter some text for the TextField "Test"
     await tester.enterText(foundTextField, 'Test Item');
     TextField text = foundTextField.evaluate().first.widget as TextField;
-    expect(text.controller.text, 'Test Item');
+    expect(text.controller?.text, 'Test Item');
     // Rebuild the widget after the state has changed.
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
 
@@ -404,7 +403,7 @@ void main() {
 
     text = find.byType(TextField).evaluate().first.widget as TextField;
     // Expect to find controller is cleared and set to an empty string
-    expect(text.controller.text, '');
+    expect(text.controller?.text, '');
   });
 
   test('Debouncer executes function only once despite repeated calls',
@@ -414,7 +413,7 @@ void main() {
     // expect that the value we pass for milliseconds is the same
     expect(_debouncer.milliseconds, 1000);
     // empty list to add an Item to
-    List _testList = List();
+    List _testList = <dynamic>[];
     // function to attempt to call multiple times that adds an item to a list
     void testFn() {
       _testList.add('Item');
@@ -441,7 +440,7 @@ void main() {
 class TestItem {
   String label;
   dynamic value;
-  TestItem({this.label, this.value});
+  TestItem({required this.label, this.value});
 
   factory TestItem.fromJson(Map<String, dynamic> json) {
     return TestItem(label: json['label'], value: json['value']);

@@ -1,4 +1,7 @@
 # Changelog
+## 0.9.0
+1-22-2022
+- Added null safety
 
 ## 0.8.0
 3-3-2021
