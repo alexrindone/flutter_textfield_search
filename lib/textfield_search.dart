@@ -277,7 +277,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       double _height =
           itemsFound == true && filteredList!.length > 1 ? 110 : 55;
       return Container(
-        height: 300,
+        height: 500,
         child: _listViewBuilder(context),
       );
     }
