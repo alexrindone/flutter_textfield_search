@@ -26,6 +26,12 @@ class TextFieldSearch extends StatefulWidget {
   /// The minimum length of characters to be entered into the TextField before executing a search
   final int minStringLength;
 
+  /// Used to style the border of the Search result container using for example [RoundedRectangleBorder].
+  /// Explore ShapeBorder for more options.
+  final ShapeBorder shape;
+
+  final ScrollbarProperties? scrollbarProperties;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
@@ -36,7 +42,9 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.decoration,
-      this.minStringLength = 2})
+      this.shape = const RoundedRectangleBorder(),
+      this.minStringLength = 2,
+      this.scrollbarProperties = const ScrollbarProperties()})
       : super(key: key);
 
   @override
@@ -52,6 +60,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   bool loading = false;
   final _debouncer = Debouncer(milliseconds: 1000);
   bool? itemsFound;
+  ScrollbarProperties? _scrollbarProperties;
 
   void resetList() {
     List tempList = <dynamic>[];
@@ -150,7 +159,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   void initState() {
     super.initState();
-
+    _scrollbarProperties = widget.scrollbarProperties;
     // throw error if we don't have an initial list or a future
     if (widget.initialList == null && widget.future == null) {
       throw ('Error: Missing required initial list or future that returns list');
@@ -274,14 +283,47 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.length > 0 ||
         itemsFound == false && widget.controller.text.length > 0) {
-      double _height =
-          itemsFound == true && filteredList!.length > 1 ? 110 : 55;
+      double _height = _widgetHeight(filteredList!.length, itemsFound);
       return Container(
         height: _height,
-        child: _listViewBuilder(context),
+        color: Colors.transparent,
+        child: Builder(
+          builder: (context) {
+            return MediaQuery.removePadding(
+              removeBottom: true,
+              removeTop: true,
+              context: context,
+              child: Scrollbar(
+                      radius: _scrollbarProperties!.radius ?? Radius.circular(10),
+                      showTrackOnHover: _scrollbarProperties!.showTrackOnHover,
+                      thickness: _scrollbarProperties!.thickness,
+                      hoverThickness: _scrollbarProperties!.hoverThickness,
+                      interactive: _scrollbarProperties!.interactive,
+                      scrollbarOrientation: _scrollbarProperties!.scrollbarOrientation,
+                      notificationPredicate: _scrollbarProperties!.notificationPredicate,
+                      controller: _scrollbarProperties!.controller,
+                      trackVisibility: _scrollbarProperties!.trackVisibility,
+                      child: _listViewBuilder(context),
+                    ),
+            );
+          },
+        ),
       );
     }
     return null;
+  }
+
+  double _widgetHeight(length, bool? itemsFound) {
+    if (itemsFound ?? false) {
+      if (length == 1)
+        return 55;
+      else if (length > 8)
+        return 300;
+      else
+        return 110;
+    } else {
+      return 55;
+    }
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -290,28 +332,31 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     return OverlayEntry(
-        builder: (context) => Positioned(
-              width: overlaySize.width,
-              child: CompositedTransformFollower(
-                link: _layerLink,
-                showWhenUnlinked: false,
-                offset: Offset(0.0, overlaySize.height + 5.0),
-                child: Material(
-                  elevation: 4.0,
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: screenWidth,
-                        maxWidth: screenWidth,
-                        minHeight: 0,
-                        // max height set to 150
-                        maxHeight: itemsFound == true ? 110 : 55,
-                      ),
-                      child: loading
-                          ? _loadingIndicator()
-                          : _listViewContainer(context)),
-                ),
+      builder: (context) => Positioned(
+        width: overlaySize.width,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, overlaySize.height + 5.0),
+          child: Material(
+            elevation: 4.0,
+            clipBehavior: Clip.antiAlias,
+            shape: widget.shape,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: screenWidth,
+                maxWidth: screenWidth,
+                minHeight: 0,
+                // max height set to 150
+                maxHeight: _widgetHeight(filteredList!.length, itemsFound),
               ),
-            ));
+              child:
+                  loading ? _loadingIndicator() : _listViewContainer(context),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
@@ -361,4 +406,80 @@ class Debouncer {
     }
     _timer = Timer(Duration(milliseconds: milliseconds!), action);
   }
+}
+
+class ScrollbarProperties {
+  const ScrollbarProperties({
+    this.controller,
+    this.isAlwaysShown,
+    this.trackVisibility,
+    this.showTrackOnHover,
+    this.hoverThickness,
+    this.thickness,
+    this.radius,
+    this.notificationPredicate,
+    this.interactive,
+    this.scrollbarOrientation,
+  });
+
+  /// {@macro flutter.widgets.Scrollbar.controller}
+  final ScrollController? controller;
+
+  /// {@macro flutter.widgets.Scrollbar.isAlwaysShown}
+  final bool? isAlwaysShown;
+
+  /// Controls the track visibility.
+  ///
+  /// If this property is null, then [ScrollbarThemeData.trackVisibility] of
+  /// [ThemeData.scrollbarTheme] is used. If that is also null, the default value
+  /// is false.
+  ///
+  /// If the track visibility is related to the scrollbar's material state,
+  /// use the global [ScrollbarThemeData.trackVisibility] or override the
+  /// sub-tree's theme data.
+  ///
+  /// [showTrackOnHover] can be replaced by this and will be deprecated.
+  final bool? trackVisibility;
+
+  /// Controls if the track will show on hover and remain, including during drag.
+  ///
+  /// If this property is null, then [ScrollbarThemeData.showTrackOnHover] of
+  /// [ThemeData.scrollbarTheme] is used. If that is also null, the default value
+  /// is false.
+  ///
+  /// This will be deprecated, and [trackVisibility] is recommended.
+  final bool? showTrackOnHover;
+
+  /// The thickness of the scrollbar when a hover state is active and
+  /// [showTrackOnHover] is true.
+  ///
+  /// If this property is null, then [ScrollbarThemeData.thickness] of
+  /// [ThemeData.scrollbarTheme] is used to resolve a thickness. If that is also
+  /// null, the default value is 12.0 pixels.
+  final double? hoverThickness;
+
+  /// The thickness of the scrollbar in the cross axis of the scrollable.
+  ///
+  /// If null, the default value is platform dependent. On [TargetPlatform.android],
+  /// the default thickness is 4.0 pixels. On [TargetPlatform.iOS],
+  /// [CupertinoScrollbar.defaultThickness] is used. The remaining platforms have a
+  /// default thickness of 8.0 pixels.
+  final double? thickness;
+
+  /// The [Radius] of the scrollbar thumb's rounded rectangle corners.
+  ///
+  /// If null, the default value is platform dependent. On [TargetPlatform.android],
+  /// no radius is applied to the scrollbar thumb. On [TargetPlatform.iOS],
+  /// [CupertinoScrollbar.defaultRadius] is used. The remaining platforms have a
+  /// default [Radius.circular] of 8.0 pixels.
+  final Radius? radius;
+
+  /// {@macro flutter.widgets.Scrollbar.interactive}
+  final bool? interactive;
+
+  /// {@macro flutter.widgets.Scrollbar.notificationPredicate}
+  final ScrollNotificationPredicate? notificationPredicate;
+
+  /// {@macro flutter.widgets.Scrollbar.scrollbarOrientation}
+  final ScrollbarOrientation? scrollbarOrientation;
 }
