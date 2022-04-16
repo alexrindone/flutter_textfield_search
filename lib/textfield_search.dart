@@ -26,6 +26,13 @@ class TextFieldSearch extends StatefulWidget {
   /// The minimum length of characters to be entered into the TextField before executing a search
   final int minStringLength;
 
+  /// Used to style the border of the Search result container using for example [RoundedRectangleBorder].
+  /// Explore ShapeBorder for more options.
+  final ShapeBorder shape;
+
+  /// Used to determine if the search result should be scrolled or not.
+  final bool applyScrollbar;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
@@ -36,6 +43,8 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.decoration,
+      this.shape = const RoundedRectangleBorder(),
+      this.applyScrollbar = true,
       this.minStringLength = 2})
       : super(key: key);
 
@@ -274,14 +283,46 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.length > 0 ||
         itemsFound == false && widget.controller.text.length > 0) {
-      double _height =
-          itemsFound == true && filteredList!.length > 1 ? 110 : 55;
+      double _height = _widgetHeight(filteredList!.length, itemsFound);
       return Container(
-        height: 500,
-        child: _listViewBuilder(context),
+        height: _height,
+        color: Colors.transparent,
+        child: Builder(
+          builder: (context) {
+            return MediaQuery.removePadding(
+              removeBottom: true,
+              removeTop: true,
+              context: context,
+              child: widget.applyScrollbar
+                  ? Scrollbar(
+                      radius: Radius.circular(10),
+                      showTrackOnHover: true,
+                      thickness: 5,
+                      hoverThickness: 5,
+                      interactive: true,
+                      scrollbarOrientation: ScrollbarOrientation.right,
+                      child: _listViewBuilder(context),
+                    )
+                  : _listViewBuilder(context),
+            );
+          },
+        ),
       );
     }
     return null;
+  }
+
+  double _widgetHeight(length, bool? itemsFound) {
+    if (itemsFound ?? false) {
+      if (length == 1)
+        return 55;
+      else if (length > 8)
+        return 300;
+      else
+        return 110;
+    } else {
+      return 55;
+    }
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -290,28 +331,31 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     Size screenSize = MediaQuery.of(context).size;
     double screenWidth = screenSize.width;
     return OverlayEntry(
-        builder: (context) => Positioned(
-              width: overlaySize.width,
-              child: CompositedTransformFollower(
-                link: _layerLink,
-                showWhenUnlinked: false,
-                offset: Offset(0.0, overlaySize.height + 5.0),
-                child: Material(
-                  elevation: 4.0,
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                        minWidth: screenWidth,
-                        maxWidth: screenWidth,
-                        minHeight: 0,
-                        // max height set to 150
-                        maxHeight: itemsFound == true ? 110 : 55,
-                      ),
-                      child: loading
-                          ? _loadingIndicator()
-                          : _listViewContainer(context)),
-                ),
+      builder: (context) => Positioned(
+        width: overlaySize.width,
+        child: CompositedTransformFollower(
+          link: _layerLink,
+          showWhenUnlinked: false,
+          offset: Offset(0.0, overlaySize.height + 5.0),
+          child: Material(
+            elevation: 4.0,
+            clipBehavior: Clip.antiAlias,
+            shape: widget.shape,
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minWidth: screenWidth,
+                maxWidth: screenWidth,
+                minHeight: 0,
+                // max height set to 150
+                maxHeight: _widgetHeight(filteredList!.length, itemsFound),
               ),
-            ));
+              child:
+                  loading ? _loadingIndicator() : _listViewContainer(context),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
