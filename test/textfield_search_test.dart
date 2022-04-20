@@ -407,265 +407,276 @@ void main() {
   });
 
   testWidgets('TextFieldSearch can have a custom scollbar theme',
-          (WidgetTester tester) async {
-        const String label = 'Test Label';
-        const Key testKey = Key('K');
-        final TextEditingController myController = TextEditingController();
+      (WidgetTester tester) async {
+    const String label = 'Test Label';
+    const Key testKey = Key('K');
+    final TextEditingController myController = TextEditingController();
 
-        // mocking a future that takes 1000ms to resolve
-        Future<List> fetchData() async {
-          await Future.delayed(Duration(milliseconds: 2000));
-          List _list = <dynamic>[];
-          String _inputText = myController.text;
-          // create a list from the text input of three items
-          // to mock a list of items from an http call
-          _list.add(_inputText + ' Item 1');
-          _list.add(_inputText + ' Item 2');
-          return _list;
-        }
+    // mocking a future that takes 1000ms to resolve
+    Future<List> fetchData() async {
+      await Future.delayed(Duration(milliseconds: 2000));
+      List _list = <dynamic>[];
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      _list.add(_inputText + ' Item 1');
+      _list.add(_inputText + ' Item 2');
+      return _list;
+    }
 
-        // Build an app with the TextFieldSearch
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: TextFieldSearch(
-                key: testKey,
-                label: label,
-                scrollbarDecoration: ScrollbarDecoration(
-                  controller: ScrollController(),
-                  theme: ScrollbarThemeData(isAlwaysShown: true, thickness: MaterialStateProperty.all(10.0))
-                ),
-                controller: myController,
-                future: () {
-                  return fetchData();
-                },
-              )),
-        ));
+    // Build an app with the TextFieldSearch
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+          body: TextFieldSearch(
+        key: testKey,
+        label: label,
+        scrollbarDecoration: ScrollbarDecoration(
+            controller: ScrollController(),
+            theme: ScrollbarThemeData(
+                isAlwaysShown: true,
+                thickness: MaterialStateProperty.all(10.0))),
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
+    ));
 
-        // find the TextField by it's type
-        var foundTextField = find.byType(TextField);
-        // enter some text for the TextField "Test"
-        await tester.enterText(foundTextField, 'Test');
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).controller?.text,
-            'Test');
+    // find the TextField by it's type
+    var foundTextField = find.byType(TextField);
+    // enter some text for the TextField "Test"
+    await tester.enterText(foundTextField, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
+        'Test');
 
-        await tester.pumpAndSettle(Duration(milliseconds: 1000));
-        // expect that we have a Scrollbar
-        expect(find.byType(Scrollbar), findsOneWidget);
-        // height of 110 because there are two items found
-        expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 110.0));
-        // make sure we have two items found
-        expect(find.byType(ListTile), findsNWidgets(2));
-      });
+    await tester.pumpAndSettle(Duration(milliseconds: 1000));
+    // expect that we have a Scrollbar
+    expect(find.byType(Scrollbar), findsOneWidget);
+    // height of 110 because there are two items found
+    expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 110.0));
+    // make sure we have two items found
+    expect(find.byType(ListTile), findsNWidgets(2));
+  });
 
-  testWidgets('TextFieldSearch will have scrollbar with default height of 3 items if more results than height are found',
-          (WidgetTester tester) async {
-        const String label = 'Test Label';
-        const Key testKey = Key('K');
-        final TextEditingController myController = TextEditingController();
+  testWidgets(
+      'TextFieldSearch will have scrollbar with default height of 3 items if more results than height are found',
+      (WidgetTester tester) async {
+    const String label = 'Test Label';
+    const Key testKey = Key('K');
+    final TextEditingController myController = TextEditingController();
 
-        // mocking a future that takes 1000ms to resolve
-        Future<List> fetchData() async {
-          await Future.delayed(Duration(milliseconds: 2000));
-          List _list = <dynamic>[];
-          String _inputText = myController.text;
-          // create a list from the text input of three items
-          // to mock a list of items from an http call
-          for( var i = 0 ; i <= 10; i++ ) {
-            _list.add(_inputText + ' Item ' + i.toString());
-          }
+    // mocking a future that takes 1000ms to resolve
+    Future<List> fetchData() async {
+      await Future.delayed(Duration(milliseconds: 2000));
+      List _list = <dynamic>[];
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      for (var i = 0; i <= 10; i++) {
+        _list.add(_inputText + ' Item ' + i.toString());
+      }
 
-          return _list;
-        }
+      return _list;
+    }
 
-        // Build an app with the TextFieldSearch
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: TextFieldSearch(
-                key: testKey,
-                label: label,
-                scrollbarDecoration: ScrollbarDecoration(
-                    controller: ScrollController(),
-                    theme: ScrollbarThemeData(isAlwaysShown: true, thickness: MaterialStateProperty.all(10.0))
-                ),
-                controller: myController,
-                future: () {
-                  return fetchData();
-                },
-              )),
-        ));
+    // Build an app with the TextFieldSearch
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+          body: TextFieldSearch(
+        key: testKey,
+        label: label,
+        scrollbarDecoration: ScrollbarDecoration(
+            controller: ScrollController(),
+            theme: ScrollbarThemeData(
+                isAlwaysShown: true,
+                thickness: MaterialStateProperty.all(10.0))),
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
+    ));
 
-        // find the TextField by it's type
-        var foundTextField = find.byType(TextField);
-        // enter some text for the TextField "Test"
-        await tester.enterText(foundTextField, 'Test');
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).controller?.text,
-            'Test');
+    // find the TextField by it's type
+    var foundTextField = find.byType(TextField);
+    // enter some text for the TextField "Test"
+    await tester.enterText(foundTextField, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
+        'Test');
 
-        await tester.pumpAndSettle(Duration(milliseconds: 1000));
-        // expect that we have a Scrollbar
-        expect(find.byType(Scrollbar), findsOneWidget);
-        expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 3.0));
-        // make sure we have 8 found
-        expect(find.byType(ListTile, skipOffstage: false), findsNWidgets(8));
-      });
+    await tester.pumpAndSettle(Duration(milliseconds: 1000));
+    // expect that we have a Scrollbar
+    expect(find.byType(Scrollbar), findsOneWidget);
+    expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 3.0));
+    // make sure we have 8 found
+    expect(find.byType(ListTile, skipOffstage: false), findsNWidgets(8));
+  });
 
-  testWidgets('TextFieldSearch can have itemsInView customization for scrollbar',
-          (WidgetTester tester) async {
-        const String label = 'Test Label';
-        const Key testKey = Key('K');
-        final TextEditingController myController = TextEditingController();
+  testWidgets(
+      'TextFieldSearch can have itemsInView customization for scrollbar',
+      (WidgetTester tester) async {
+    const String label = 'Test Label';
+    const Key testKey = Key('K');
+    final TextEditingController myController = TextEditingController();
 
-        // mocking a future that takes 1000ms to resolve
-        Future<List> fetchData() async {
-          await Future.delayed(Duration(milliseconds: 2000));
-          List _list = <dynamic>[];
-          String _inputText = myController.text;
-          // create a list from the text input of three items
-          // to mock a list of items from an http call
-          for( var i = 0 ; i <= 10; i++ ) {
-            _list.add(_inputText + ' Item ' + i.toString());
-          }
+    // mocking a future that takes 1000ms to resolve
+    Future<List> fetchData() async {
+      await Future.delayed(Duration(milliseconds: 2000));
+      List _list = <dynamic>[];
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      for (var i = 0; i <= 10; i++) {
+        _list.add(_inputText + ' Item ' + i.toString());
+      }
 
-          return _list;
-        }
+      return _list;
+    }
 
-        // Build an app with the TextFieldSearch
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: TextFieldSearch(
-                key: testKey,
-                label: label,
-                scrollbarDecoration: ScrollbarDecoration(
-                    controller: ScrollController(),
-                    theme: ScrollbarThemeData(isAlwaysShown: true, thickness: MaterialStateProperty.all(10.0))
-                ),
-                itemsInView: 5,
-                controller: myController,
-                future: () {
-                  return fetchData();
-                },
-              )),
-        ));
+    // Build an app with the TextFieldSearch
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+          body: TextFieldSearch(
+        key: testKey,
+        label: label,
+        scrollbarDecoration: ScrollbarDecoration(
+            controller: ScrollController(),
+            theme: ScrollbarThemeData(
+                isAlwaysShown: true,
+                thickness: MaterialStateProperty.all(10.0))),
+        itemsInView: 5,
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
+    ));
 
-        // find the TextField by it's type
-        var foundTextField = find.byType(TextField);
-        // enter some text for the TextField "Test"
-        await tester.enterText(foundTextField, 'Test');
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).controller?.text,
-            'Test');
+    // find the TextField by it's type
+    var foundTextField = find.byType(TextField);
+    // enter some text for the TextField "Test"
+    await tester.enterText(foundTextField, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
+        'Test');
 
-        await tester.pumpAndSettle(Duration(milliseconds: 1000));
-        // expect that we have a Scrollbar
-        expect(find.byType(Scrollbar), findsOneWidget);
-        expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 5.0));
-        // make sure we have 10 found
-        expect(find.byType(ListTile, skipOffstage: false), findsNWidgets(10));
-      });
+    await tester.pumpAndSettle(Duration(milliseconds: 1000));
+    // expect that we have a Scrollbar
+    expect(find.byType(Scrollbar), findsOneWidget);
+    expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 5.0));
+    // make sure we have 10 found
+    expect(find.byType(ListTile, skipOffstage: false), findsNWidgets(10));
+  });
 
-  testWidgets('TextFieldSearch scrollbar will have height of 55 when one item is found',
-          (WidgetTester tester) async {
-        const String label = 'Test Label';
-        const Key testKey = Key('K');
-        final TextEditingController myController = TextEditingController();
+  testWidgets(
+      'TextFieldSearch scrollbar will have height of 55 when one item is found',
+      (WidgetTester tester) async {
+    const String label = 'Test Label';
+    const Key testKey = Key('K');
+    final TextEditingController myController = TextEditingController();
 
-        // mocking a future that takes 1000ms to resolve
-        Future<List> fetchData() async {
-          await Future.delayed(Duration(milliseconds: 2000));
-          List _list = <dynamic>[];
-          String _inputText = myController.text;
-          // create a list from the text input of three items
-          // to mock a list of items from an http call
-          _list.add(_inputText + ' Item 1');
+    // mocking a future that takes 1000ms to resolve
+    Future<List> fetchData() async {
+      await Future.delayed(Duration(milliseconds: 2000));
+      List _list = <dynamic>[];
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      _list.add(_inputText + ' Item 1');
 
-          return _list;
-        }
+      return _list;
+    }
 
-        // Build an app with the TextFieldSearch
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: TextFieldSearch(
-                key: testKey,
-                label: label,
-                scrollbarDecoration: ScrollbarDecoration(
-                    controller: ScrollController(),
-                    theme: ScrollbarThemeData(isAlwaysShown: true, thickness: MaterialStateProperty.all(10.0))
-                ),
-                controller: myController,
-                future: () {
-                  return fetchData();
-                },
-              )),
-        ));
+    // Build an app with the TextFieldSearch
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+          body: TextFieldSearch(
+        key: testKey,
+        label: label,
+        scrollbarDecoration: ScrollbarDecoration(
+            controller: ScrollController(),
+            theme: ScrollbarThemeData(
+                isAlwaysShown: true,
+                thickness: MaterialStateProperty.all(10.0))),
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
+    ));
 
-        // find the TextField by it's type
-        var foundTextField = find.byType(TextField);
-        // enter some text for the TextField "Test"
-        await tester.enterText(foundTextField, 'Test');
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).controller?.text,
-            'Test');
+    // find the TextField by it's type
+    var foundTextField = find.byType(TextField);
+    // enter some text for the TextField "Test"
+    await tester.enterText(foundTextField, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
+        'Test');
 
-        await tester.pumpAndSettle(Duration(milliseconds: 1000));
-        // expect that we have a Scrollbar
-        expect(find.byType(Scrollbar), findsOneWidget);
-        expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 1.0));
-        // make sure we have 10 found
-        expect(find.byType(ListTile), findsNWidgets(1));
-      });
+    await tester.pumpAndSettle(Duration(milliseconds: 1000));
+    // expect that we have a Scrollbar
+    expect(find.byType(Scrollbar), findsOneWidget);
+    expect(tester.getSize(find.byType(Scrollbar)), Size(800.0, 55.0 * 1.0));
+    // make sure we have 10 found
+    expect(find.byType(ListTile), findsNWidgets(1));
+  });
 
-  testWidgets('TextFieldSearch scrollbar will have height of 55 when one item is found',
-          (WidgetTester tester) async {
-        const String label = 'Test Label';
-        const Key testKey = Key('K');
-        const String hintText = 'Search For Something';
-        final TextEditingController myController = TextEditingController();
+  testWidgets(
+      'TextFieldSearch scrollbar will have height of 55 when one item is found',
+      (WidgetTester tester) async {
+    const String label = 'Test Label';
+    const Key testKey = Key('K');
+    const String hintText = 'Search For Something';
+    final TextEditingController myController = TextEditingController();
 
-        // mocking a future that takes 1000ms to resolve
-        Future<List> fetchData() async {
-          await Future.delayed(Duration(milliseconds: 2000));
-          List _list = <dynamic>[];
-          String _inputText = myController.text;
-          // create a list from the text input of three items
-          // to mock a list of items from an http call
-          _list.add(_inputText + ' Item 1');
+    // mocking a future that takes 1000ms to resolve
+    Future<List> fetchData() async {
+      await Future.delayed(Duration(milliseconds: 2000));
+      List _list = <dynamic>[];
+      String _inputText = myController.text;
+      // create a list from the text input of three items
+      // to mock a list of items from an http call
+      _list.add(_inputText + ' Item 1');
 
-          return _list;
-        }
+      return _list;
+    }
 
-        // Build an app with the TextFieldSearch
-        await tester.pumpWidget(MaterialApp(
-          home: Scaffold(
-              body: TextFieldSearch(
-                key: testKey,
-                label: label,
-                scrollbarDecoration: ScrollbarDecoration(
-                    controller: ScrollController(),
-                    theme: ScrollbarThemeData(isAlwaysShown: true, thickness: MaterialStateProperty.all(10.0))
-                ),
-                decoration: InputDecoration(hintText: hintText),
-                controller: myController,
-                future: () {
-                  return fetchData();
-                },
-              )),
-        ));
+    // Build an app with the TextFieldSearch
+    await tester.pumpWidget(MaterialApp(
+      home: Scaffold(
+          body: TextFieldSearch(
+        key: testKey,
+        label: label,
+        scrollbarDecoration: ScrollbarDecoration(
+            controller: ScrollController(),
+            theme: ScrollbarThemeData(
+                isAlwaysShown: true,
+                thickness: MaterialStateProperty.all(10.0))),
+        decoration: InputDecoration(hintText: hintText),
+        controller: myController,
+        future: () {
+          return fetchData();
+        },
+      )),
+    ));
 
-        // find the TextField by it's type
-        var foundTextField = find.byType(TextField);
-        // enter some text for the TextField "Test"
-        await tester.enterText(foundTextField, 'Test');
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).controller?.text,
-            'Test');
+    // find the TextField by it's type
+    var foundTextField = find.byType(TextField);
+    // enter some text for the TextField "Test"
+    await tester.enterText(foundTextField, 'Test');
+    expect(
+        (foundTextField.evaluate().first.widget as TextField).controller?.text,
+        'Test');
 
-        await tester.pumpAndSettle(Duration(milliseconds: 1000));
-        expect(
-            (foundTextField.evaluate().first.widget as TextField).decoration?.hintText,
-            hintText);
-      });
+    await tester.pumpAndSettle(Duration(milliseconds: 1000));
+    expect(
+        (foundTextField.evaluate().first.widget as TextField)
+            .decoration
+            ?.hintText,
+        hintText);
+  });
 
   test('Debouncer executes function only once despite repeated calls',
       () async {

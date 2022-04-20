@@ -35,17 +35,16 @@ class TextFieldSearch extends StatefulWidget {
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
-        this.initialList,
-        required this.label,
-        required this.controller,
-        this.textStyle,
-        this.future,
-        this.getSelectedValue,
-        this.decoration,
-        this.scrollbarDecoration,
-        this.itemsInView = 3,
-        this.minStringLength = 2}
-      )
+      this.initialList,
+      required this.label,
+      required this.controller,
+      this.textStyle,
+      this.future,
+      this.getSelectedValue,
+      this.decoration,
+      this.scrollbarDecoration,
+      this.itemsInView = 3,
+      this.minStringLength = 2})
       : super(key: key);
 
   @override
@@ -292,22 +291,21 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   Widget decoratedScrollbar(child) {
     if (widget.scrollbarDecoration is ScrollbarDecoration) {
       return Theme(
-        data: Theme.of(context).copyWith(scrollbarTheme: widget.scrollbarDecoration!.theme),
+        data: Theme.of(context)
+            .copyWith(scrollbarTheme: widget.scrollbarDecoration!.theme),
         child: Scrollbar(child: child, controller: _scrollController),
       );
     }
 
     return Scrollbar(child: child);
-}
+  }
 
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.length > 0 ||
         itemsFound == false && widget.controller.text.length > 0) {
-
       return Container(
-        height: calculateHeight().toDouble(),
-        child: decoratedScrollbar(_listViewBuilder(context))
-      );
+          height: calculateHeight().toDouble(),
+          child: decoratedScrollbar(_listViewBuilder(context)));
     }
     return null;
   }
@@ -318,7 +316,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   num calculateHeight() {
     if (filteredList!.length > 1) {
-
       if (widget.itemsInView <= filteredList!.length) {
         return heightByLength(widget.itemsInView);
       }
