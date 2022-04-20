@@ -23,20 +23,29 @@ class TextFieldSearch extends StatefulWidget {
   /// Used for customizing the style of the text within the TextField
   final TextStyle? textStyle;
 
+  /// Used for customizing the scrollbar for the scrollable results
+  final ScrollbarDecoration? scrollbarDecoration;
+
   /// The minimum length of characters to be entered into the TextField before executing a search
   final int minStringLength;
+
+  /// The number of matched items that are viewable in results
+  final int itemsInView;
 
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
-      this.initialList,
-      required this.label,
-      required this.controller,
-      this.textStyle,
-      this.future,
-      this.getSelectedValue,
-      this.decoration,
-      this.minStringLength = 2})
+        this.initialList,
+        required this.label,
+        required this.controller,
+        this.textStyle,
+        this.future,
+        this.getSelectedValue,
+        this.decoration,
+        this.scrollbarDecoration,
+        this.itemsInView = 3,
+        this.minStringLength = 2}
+      )
       : super(key: key);
 
   @override
@@ -51,7 +60,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   bool hasFuture = false;
   bool loading = false;
   final _debouncer = Debouncer(milliseconds: 1000);
+  static const itemHeight = 55;
   bool? itemsFound;
+  ScrollController _scrollController = ScrollController();
 
   void resetList() {
     List tempList = <dynamic>[];
@@ -131,6 +142,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     this.setLoading();
     // set the filtered list using the initial list
     this.filteredList = widget.initialList;
+
     // create an empty temp list
     List tempList = <dynamic>[];
     // loop through each item in filtered items
@@ -150,6 +162,10 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   void initState() {
     super.initState();
+
+    if (widget.scrollbarDecoration?.controller != null) {
+      _scrollController = widget.scrollbarDecoration!.controller;
+    }
 
     // throw error if we don't have an initial list or a future
     if (widget.initialList == null && widget.future == null) {
@@ -205,6 +221,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       return ListView(
         padding: EdgeInsets.zero,
         shrinkWrap: true,
+        controller: _scrollController,
         children: <Widget>[
           GestureDetector(
             onTap: () {
@@ -227,6 +244,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       );
     }
     return ListView.builder(
+      controller: _scrollController,
       itemCount: filteredList!.length,
       itemBuilder: (context, i) {
         return GestureDetector(
@@ -271,17 +289,44 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     );
   }
 
+  Widget decoratedScrollbar(child) {
+    if (widget.scrollbarDecoration is ScrollbarDecoration) {
+      return Theme(
+        data: Theme.of(context).copyWith(scrollbarTheme: widget.scrollbarDecoration!.theme),
+        child: Scrollbar(child: child, controller: _scrollController),
+      );
+    }
+
+    return Scrollbar(child: child);
+}
+
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.length > 0 ||
         itemsFound == false && widget.controller.text.length > 0) {
-      double _height =
-          itemsFound == true && filteredList!.length > 1 ? 110 : 55;
+
       return Container(
-        height: _height,
-        child: _listViewBuilder(context),
+        height: calculateHeight().toDouble(),
+        child: decoratedScrollbar(_listViewBuilder(context))
       );
     }
     return null;
+  }
+
+  num heightByLength(int length) {
+    return itemHeight * length;
+  }
+
+  num calculateHeight() {
+    if (filteredList!.length > 1) {
+
+      if (widget.itemsInView <= filteredList!.length) {
+        return heightByLength(widget.itemsInView);
+      }
+
+      return heightByLength(filteredList!.length);
+    }
+
+    return itemHeight;
   }
 
   OverlayEntry _createOverlayEntry() {
@@ -303,8 +348,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                         minWidth: screenWidth,
                         maxWidth: screenWidth,
                         minHeight: 0,
-                        // max height set to 150
-                        maxHeight: itemsFound == true ? 110 : 55,
+                        maxHeight: calculateHeight().toDouble(),
                       ),
                       child: loading
                           ? _loadingIndicator()
@@ -361,4 +405,17 @@ class Debouncer {
     }
     _timer = Timer(Duration(milliseconds: milliseconds!), action);
   }
+}
+
+class ScrollbarDecoration {
+  const ScrollbarDecoration({
+    required this.controller,
+    required this.theme,
+  });
+
+  /// {@macro flutter.widgets.Scrollbar.controller}
+  final ScrollController controller;
+
+  /// {@macro flutter.widgets.ScrollbarThemeData}
+  final ScrollbarThemeData theme;
 }
