@@ -1,4 +1,11 @@
 # Changelog
+## 0.10.0
+4-19-2022
+- Adding support for styling scrollbar with longer lists
+- Adding support to change height of the scroll widget
+- Adding better tests and coverage for decoration of text input
+- special thanks to @maykhid for input and ideas on scrollbar decoration
+
 ## 0.9.2
 1-22-2022
 - Fixing formatting

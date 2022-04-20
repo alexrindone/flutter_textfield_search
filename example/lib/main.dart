@@ -39,6 +39,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController myController = TextEditingController();
   TextEditingController myController2 = TextEditingController();
   TextEditingController myController3 = TextEditingController();
+  TextEditingController myController4 = TextEditingController();
 
   @override
   void initState() {
@@ -46,12 +47,14 @@ class _MyHomePageState extends State<MyHomePage> {
     myController.addListener(_printLatestValue);
     myController2.addListener(_printLatestValue);
     myController3.addListener(_printLatestValue);
+    myController4.addListener(_printLatestValue);
   }
 
   _printLatestValue() {
     print("text field: ${myController.text}");
     print("text field: ${myController2.text}");
     print("text field: ${myController3.text}");
+    print("text field: ${myController4.text}");
   }
 
   @override
@@ -61,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
     myController.dispose();
     myController2.dispose();
     myController3.dispose();
+    myController4.dispose();
     super.dispose();
   }
 
@@ -70,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
     List _list = <dynamic>[];
     // create a list from the text input of three items
     // to mock a list of items from an http call
-    _list.add('Text' + ' Item 1');
+    _list.add('Test' + ' Item 1');
     _list.add('Test' + ' Item 2');
     _list.add('Test' + ' Item 3');
     return _list;
@@ -132,6 +136,20 @@ class _MyHomePageState extends State<MyHomePage> {
                 textStyle: TextStyle(color: Colors.red),
                 decoration: InputDecoration(hintText: 'Search For Something'),
               ),
+              SizedBox(height: 16),
+              TextFieldSearch(
+                  label: 'Future List with custom scrollbar theme',
+                  controller: myController4,
+                  scrollbarDecoration: ScrollbarDecoration(
+                      controller: ScrollController(),
+                      theme: ScrollbarThemeData(
+                          radius: Radius.circular(30.0),
+                          thickness: MaterialStateProperty.all(20.0),
+                          isAlwaysShown: true,
+                          trackColor: MaterialStateProperty.all(Colors.red))),
+                  future: () {
+                    return fetchSimpleData();
+                  }),
               SizedBox(height: 16),
               TextFieldSearch(
                   initialList: _testList,
