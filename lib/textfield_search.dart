@@ -32,6 +32,9 @@ class TextFieldSearch extends StatefulWidget {
   /// The number of matched items that are viewable in results
   final int itemsInView;
 
+  /// A boolean used for deciding whether or not to clear TextField when unfocused
+  final bool autoClear;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
@@ -44,7 +47,8 @@ class TextFieldSearch extends StatefulWidget {
       this.decoration,
       this.scrollbarDecoration,
       this.itemsInView = 3,
-      this.minStringLength = 2})
+      this.minStringLength = 2,
+      this.autoClear = true})
       : super(key: key);
 
   @override
@@ -188,7 +192,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         if (itemsFound == false || loading == true) {
           // reset the list so it's empty and not visible
           resetList();
-          widget.controller.clear();
+          if (widget.autoClear == true) widget.controller.clear();
+          
         }
         // if we have a list of items, make sure the text input matches one of them
         // if not, clear the input
@@ -201,7 +206,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           } else {
             textMatchesItem = filteredList!.contains(widget.controller.text);
           }
-          if (textMatchesItem == false) widget.controller.clear();
+          if (textMatchesItem == false && widget.autoClear == true) widget.controller.clear();
           resetList();
         }
       }
