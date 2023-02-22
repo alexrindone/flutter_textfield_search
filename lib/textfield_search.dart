@@ -31,7 +31,8 @@ class TextFieldSearch extends StatefulWidget {
 
   /// The number of matched items that are viewable in results
   final int itemsInView;
-
+  
+  // Initial value for textformField
   final String? initialValue;
 
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
