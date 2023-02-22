@@ -31,6 +31,9 @@ class TextFieldSearch extends StatefulWidget {
 
   /// The number of matched items that are viewable in results
   final int itemsInView;
+  
+  // Initial value for textformField
+  final String? initialValue;
 
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
@@ -40,6 +43,7 @@ class TextFieldSearch extends StatefulWidget {
       required this.controller,
       this.textStyle,
       this.future,
+      this.initialValue = "",
       this.getSelectedValue,
       this.decoration,
       this.scrollbarDecoration,
@@ -360,6 +364,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: TextField(
+        initialValue : widget.initialValue,
         controller: widget.controller,
         focusNode: this._focusNode,
         decoration: widget.decoration != null
