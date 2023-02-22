@@ -33,13 +33,13 @@ class TextFieldSearch extends StatefulWidget {
   final int itemsInView;
 
   //// The number (double) value for height of cursor
-  final double cursorHeight;
+  final double? cursorHeight;
 
   //// The number (double) value for width of cursor
-  final double cursorWidth;
+  final double? cursorWidth;
 
   /// bool for show cursor
-  final bool showCursor;
+  final bool? showCursor;
 
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
