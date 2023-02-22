@@ -32,12 +32,24 @@ class TextFieldSearch extends StatefulWidget {
   /// The number of matched items that are viewable in results
   final int itemsInView;
 
+  //// The number (double) value for height of cursor
+  final double cursorHeight;
+
+  //// The number (double) value for width of cursor
+  final double cursorWidth;
+
+  /// bool for show cursor
+  final bool showCursor;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
       this.initialList,
       required this.label,
       required this.controller,
+      this.cursorHeight,
+      this.cursorWidth,
+      this.showCursor = false,
       this.textStyle,
       this.future,
       this.getSelectedValue,
@@ -360,6 +372,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: TextField(
+        cursorHeight: widget.cursorHeight,
+        cursorWidth:widget.cursorWidth,
+        showCursor:widget.showCursor,
         controller: widget.controller,
         focusNode: this._focusNode,
         decoration: widget.decoration != null
