@@ -35,6 +35,9 @@ class TextFieldSearch extends StatefulWidget {
   /// Background color for the container of drop down menu
   final Color? dropDownBackgroundColor;
 
+  /// Color for cursor
+  final Color? cursorColor;
+
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
       {Key? key,
@@ -48,7 +51,8 @@ class TextFieldSearch extends StatefulWidget {
       this.scrollbarDecoration,
       this.itemsInView = 3,
       this.minStringLength = 2,
-      this.dropDownBackgroundColor})
+      this.dropDownBackgroundColor,
+      this.cursorColor})
       : super(key: key);
 
   @override
@@ -342,6 +346,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: TextField(
+        cursorColor: widget.cursorColor,
         controller: widget.controller,
         focusNode: this._focusNode,
         decoration: widget.decoration != null ? widget.decoration : InputDecoration(labelText: widget.label),
