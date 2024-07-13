@@ -432,9 +432,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -488,9 +487,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -543,9 +541,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         itemsInView: 5,
         controller: myController,
         future: () {
@@ -597,9 +594,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -651,9 +647,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         decoration: InputDecoration(hintText: hintText),
         controller: myController,
         future: () {

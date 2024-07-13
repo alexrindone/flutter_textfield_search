@@ -144,9 +144,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: ScrollController(),
                       theme: ScrollbarThemeData(
                           radius: Radius.circular(30.0),
-                          thickness: MaterialStateProperty.all(20.0),
-                          isAlwaysShown: true,
-                          trackColor: MaterialStateProperty.all(Colors.red))),
+                          thickness: WidgetStateProperty.all(20.0),
+                          trackColor: WidgetStateProperty.all(Colors.red))),
                   future: () {
                     return fetchSimpleData();
                   }),
