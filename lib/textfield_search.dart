@@ -180,7 +180,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         this._overlayEntry = this._createOverlayEntry();
-        Overlay.of(context)!.insert(this._overlayEntry);
+        Overlay.of(context).insert(this._overlayEntry);
       } else {
         this._overlayEntry.remove();
         // check to see if itemsFound is false, if it is clear the input
