@@ -35,6 +35,9 @@ class TextFieldSearch extends StatefulWidget {
 
   /// The number of matched items that are viewable in results
   final int itemsInView;
+  
+  // Initial value for textformField
+  final String? initialValue;
 
   /// A boolean used for deciding whether or not to clear TextField when unfocused
   final bool autoClear;
@@ -47,6 +50,7 @@ class TextFieldSearch extends StatefulWidget {
       required this.controller,
       this.textStyle,
       this.future,
+      this.initialValue = "",
       this.getSelectedValue,
       this.cursorColor,
       this.decoration,
@@ -370,6 +374,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     return CompositedTransformTarget(
       link: this._layerLink,
       child: TextField(
+        initialValue : widget.initialValue,
         controller: widget.controller,
         cursorColor: widget.cursorColor != null
             ? widget.cursorColor
