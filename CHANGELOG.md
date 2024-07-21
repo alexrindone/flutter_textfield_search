@@ -1,4 +1,11 @@
 # Changelog
+## 0.11.0
+7-21-2024
+- Upgrading various dependencies
+- Added support for cursorColor
+- Added support for resultsBackgroundColor
+- Added support for clearing TextField when no results are found and focus changes
+  
 ## 0.10.0
 4-19-2022
 - Adding support for styling scrollbar with longer lists
