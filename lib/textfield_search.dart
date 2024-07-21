@@ -21,6 +21,8 @@ class TextFieldSearch extends StatefulWidget {
   /// Used for customizing the display of the CursorColor
   final MaterialColor? cursorColor;
 
+  final Color? resultsBackgroundColor;
+
   /// Used for customizing the display of the TextField
   final InputDecoration? decoration;
 
@@ -49,6 +51,7 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.cursorColor,
+        this.resultsBackgroundColor,
       this.decoration,
       this.scrollbarDecoration,
       this.itemsInView = 3,
@@ -350,6 +353,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                 offset: Offset(0.0, overlaySize.height + 5.0),
                 child: Material(
                   elevation: 4.0,
+                  color: widget.resultsBackgroundColor,
                   child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minWidth: screenWidth,

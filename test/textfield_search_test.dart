@@ -92,6 +92,52 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
   });
 
+  testWidgets('TextFieldSearch can receive a resultsBackgroundColor property',
+          (WidgetTester tester) async {
+        const List dummyList = ['Item 1', 'Item 2'];
+        const String label = 'Test Label';
+        const Key testKey = Key('K');
+        final TextEditingController myController = TextEditingController();
+        // Build an app with the TextFieldSearch
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: TextFieldSearch(
+                key: testKey,
+                initialList: dummyList,
+                label: label,
+                controller: myController,
+                resultsBackgroundColor: Colors.amberAccent,
+              )),
+        ));
+        // find the TextField by it's type
+        var foundTextField = find.byType(TextField);
+        // enter some text for the TextField "Item"
+        await tester.enterText(foundTextField, 'Item');
+        // expect that the widget has focus after entering text
+        expect(
+            (foundTextField.evaluate().first.widget as TextField)
+                .focusNode
+                ?.hasFocus,
+            true);
+        // find the widget by the key
+        expect(foundTextField, findsOneWidget);
+        // find the widget by the entered text
+        expect(find.text('Item'), findsOneWidget);
+        // expect that we have one text widget with passed in label: "Test Label"
+        expect(find.text(label), findsOneWidget);
+        // expect we have one positioned widget
+        expect(find.byType(Positioned), findsOneWidget);
+
+        // rebuild widget
+        await tester.pumpAndSettle(Duration(milliseconds: 1000));
+
+        // find the Material parent of ContrainedBox child
+        var foundContrainedBox = find.byType(ConstrainedBox);
+        var foundMaterial = find.byType(Material);
+        var foundMaterialElement = find.ancestor(of: foundContrainedBox, matching: foundMaterial).evaluate().first.widget as Material;
+        expect(foundMaterialElement.color, Colors.amberAccent);
+      });
+
   testWidgets('TextFieldSearch has a future that returns a List',
       (WidgetTester tester) async {
     const String label = 'Test Label';
