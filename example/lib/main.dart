@@ -98,7 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _list.add(new TestItem.fromJson(_jsonList[0]));
     _list.add(new TestItem.fromJson(_jsonList[1]));
     _list.add(new TestItem.fromJson(_jsonList[2]));
-  print(_list);
     return _list;
   }
 
