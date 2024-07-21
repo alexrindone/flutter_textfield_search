@@ -11,7 +11,7 @@ To use this package, add flutter_textfield_search as a dependency in your pubsec
 ## Example
 Import the package.
 
-    `import 'package:flutter_textfield_search/search.dart'`;
+    `import 'package:flutter_textfield_search/textfield_search.dart'`;
 
 Then include the widget anywhere you would normally use a TextField widget with a String for label, a List for initialList, and a TextEditingController for controller.
     <br>Example MaterialApp using TextFieldSearch Widget
