@@ -70,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // mocking a future
   Future<List> fetchSimpleData() async {
+    print("Calling future simple data...");
     await Future.delayed(Duration(milliseconds: 2000));
     List _list = <dynamic>[];
     // create a list from the text input of three items
@@ -82,12 +83,13 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // mocking a future that returns List of Objects
   Future<List> fetchComplexData() async {
+    print("Calling future complex data");
     await Future.delayed(Duration(milliseconds: 1000));
     List _list = <dynamic>[];
     List _jsonList = [
-      {'label': 'Text' + ' Item 1', 'value': 30},
-      {'label': 'Text' + ' Item 2', 'value': 31},
-      {'label': 'Text' + ' Item 3', 'value': 32},
+      {'label': 'Test' + ' Item 1', 'value': 30},
+      {'label': 'Test' + ' Item 2', 'value': 31},
+      {'label': 'Test' + ' Item 3', 'value': 32},
     ];
     // create a list from the text input of three items
     // to mock a list of items from an http call where
@@ -96,7 +98,6 @@ class _MyHomePageState extends State<MyHomePage> {
     _list.add(new TestItem.fromJson(_jsonList[0]));
     _list.add(new TestItem.fromJson(_jsonList[1]));
     _list.add(new TestItem.fromJson(_jsonList[2]));
-
     return _list;
   }
 
@@ -132,9 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 getSelectedValue: (item) {
                   print(item);
                 },
-                minStringLength: 5,
-                textStyle: TextStyle(color: Colors.red),
-                decoration: InputDecoration(hintText: 'Search For Something'),
+                minStringLength: 4,
               ),
               SizedBox(height: 16),
               TextFieldSearch(
@@ -144,9 +143,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       controller: ScrollController(),
                       theme: ScrollbarThemeData(
                           radius: Radius.circular(30.0),
-                          thickness: MaterialStateProperty.all(20.0),
-                          isAlwaysShown: true,
-                          trackColor: MaterialStateProperty.all(Colors.red))),
+                          thickness: WidgetStateProperty.all(20.0),
+                          trackColor: WidgetStateProperty.all(Colors.red))),
                   future: () {
                     return fetchSimpleData();
                   }),

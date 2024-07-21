@@ -35,8 +35,6 @@ void main() {
     expect(find.text('Item'), findsOneWidget);
     // expect that we have one text widget with passed in label: "Test Label"
     expect(find.text(label), findsOneWidget);
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
 
@@ -94,6 +92,52 @@ void main() {
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
   });
 
+  testWidgets('TextFieldSearch can receive a resultsBackgroundColor property',
+          (WidgetTester tester) async {
+        const List dummyList = ['Item 1', 'Item 2'];
+        const String label = 'Test Label';
+        const Key testKey = Key('K');
+        final TextEditingController myController = TextEditingController();
+        // Build an app with the TextFieldSearch
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: TextFieldSearch(
+                key: testKey,
+                initialList: dummyList,
+                label: label,
+                controller: myController,
+                resultsBackgroundColor: Colors.amberAccent,
+              )),
+        ));
+        // find the TextField by it's type
+        var foundTextField = find.byType(TextField);
+        // enter some text for the TextField "Item"
+        await tester.enterText(foundTextField, 'Item');
+        // expect that the widget has focus after entering text
+        expect(
+            (foundTextField.evaluate().first.widget as TextField)
+                .focusNode
+                ?.hasFocus,
+            true);
+        // find the widget by the key
+        expect(foundTextField, findsOneWidget);
+        // find the widget by the entered text
+        expect(find.text('Item'), findsOneWidget);
+        // expect that we have one text widget with passed in label: "Test Label"
+        expect(find.text(label), findsOneWidget);
+        // expect we have one positioned widget
+        expect(find.byType(Positioned), findsOneWidget);
+
+        // rebuild widget
+        await tester.pumpAndSettle(Duration(milliseconds: 1000));
+
+        // find the Material parent of ContrainedBox child
+        var foundContrainedBox = find.byType(ConstrainedBox);
+        var foundMaterial = find.byType(Material);
+        var foundMaterialElement = find.ancestor(of: foundContrainedBox, matching: foundMaterial).evaluate().first.widget as Material;
+        expect(foundMaterialElement.color, Colors.amberAccent);
+      });
+
   testWidgets('TextFieldSearch has a future that returns a List',
       (WidgetTester tester) async {
     const String label = 'Test Label';
@@ -134,8 +178,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
@@ -186,8 +228,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
@@ -254,8 +294,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
@@ -275,7 +313,7 @@ void main() {
     expect(selectedItem, 30);
   });
 
-  testWidgets('Tap `No matching items` clears search input',
+  testWidgets('Tap `No matching items` clears search input by default',
       (WidgetTester tester) async {
     // Enter text code...
     const List dummyList = ['Item 1', 'Item 2'];
@@ -432,9 +470,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -488,9 +525,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -543,9 +579,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         itemsInView: 5,
         controller: myController,
         future: () {
@@ -597,9 +632,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         controller: myController,
         future: () {
           return fetchData();
@@ -651,9 +685,8 @@ void main() {
         label: label,
         scrollbarDecoration: ScrollbarDecoration(
             controller: ScrollController(),
-            theme: ScrollbarThemeData(
-                isAlwaysShown: true,
-                thickness: MaterialStateProperty.all(10.0))),
+            theme:
+                ScrollbarThemeData(thickness: WidgetStateProperty.all(10.0))),
         decoration: InputDecoration(hintText: hintText),
         controller: myController,
         future: () {
@@ -677,6 +710,74 @@ void main() {
             ?.hintText,
         hintText);
   });
+
+  testWidgets(
+      'TextFieldSearch can keep TextEditController value on close',
+          (WidgetTester tester) async {
+            // Enter text code...
+            const List dummyList = ['Item 1', 'Item 2'];
+            const String label = 'Test Label';
+            const Key testKey = Key('K');
+            final TextEditingController myController = TextEditingController();
+            // Build an app with the TextFieldSearch
+            await tester.pumpWidget(MaterialApp(
+              home: Scaffold(
+                  body: TextFieldSearch(
+                    key: testKey,
+                    initialList: dummyList,
+                    label: label,
+                    controller: myController,
+                    autoClear: false,
+                  )),
+            ));
+
+            await tester.enterText(find.byType(TextField), 'Test');
+            await tester.pumpAndSettle(Duration(milliseconds: 1000));
+            // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
+            TextField text =
+            find.byType(TextField).evaluate().first.widget as TextField;
+            expect(text.controller?.text, 'Test');
+
+            // Rebuild the widget after the state has changed.
+            await tester.pumpAndSettle(Duration(milliseconds: 1000));
+
+            // Unfocus the input
+            FocusManager.instance.primaryFocus?.unfocus();
+
+            text = find.byType(TextField).evaluate().first.widget as TextField;
+            // Expect to find controller is not cleared and value stays the same
+            expect(text.controller?.text, 'Test');
+      });
+
+  testWidgets(
+      'TextFieldSearch can have cursorColor property override default',
+          (WidgetTester tester) async {
+        // Enter text code...
+        const List dummyList = ['Item 1', 'Item 2'];
+        const String label = 'Test Label';
+        const Key testKey = Key('K');
+        final TextEditingController myController = TextEditingController();
+        // Build an app with the TextFieldSearch
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: TextFieldSearch(
+                key: testKey,
+                initialList: dummyList,
+                label: label,
+                controller: myController,
+                cursorColor: Colors.orange,
+              )),
+        ));
+
+        await tester.enterText(find.byType(TextField), 'Test');
+        await tester.pumpAndSettle(Duration(milliseconds: 1000));
+        // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
+        TextField text =
+        find.byType(TextField).evaluate().first.widget as TextField;
+
+        // Expect to find TextField cursor is the correct cursor color passed to the constructor
+        expect(text.cursorColor, Colors.orange);
+      });
 
   test('Debouncer executes function only once despite repeated calls',
       () async {

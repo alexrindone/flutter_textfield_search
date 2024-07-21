@@ -21,6 +21,8 @@ class TextFieldSearch extends StatefulWidget {
   /// Used for customizing the display of the CursorColor
   final MaterialColor? cursorColor;
 
+  final Color? resultsBackgroundColor;
+
   /// Used for customizing the display of the TextField
   final InputDecoration? decoration;
 
@@ -49,6 +51,7 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.cursorColor,
+        this.resultsBackgroundColor,
       this.decoration,
       this.scrollbarDecoration,
       this.itemsInView = 3,
@@ -189,7 +192,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     _focusNode.addListener(() {
       if (_focusNode.hasFocus) {
         this._overlayEntry = this._createOverlayEntry();
-        Overlay.of(context)!.insert(this._overlayEntry);
+        Overlay.of(context).insert(this._overlayEntry);
       } else {
         this._overlayEntry.remove();
         // check to see if itemsFound is false, if it is clear the input
@@ -350,6 +353,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
                 offset: Offset(0.0, overlaySize.height + 5.0),
                 child: Material(
                   elevation: 4.0,
+                  color: widget.resultsBackgroundColor,
                   child: ConstrainedBox(
                       constraints: BoxConstraints(
                         minWidth: screenWidth,
@@ -373,7 +377,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         controller: widget.controller,
         cursorColor: widget.cursorColor != null
             ? widget.cursorColor
-            : Colors.white,
+            : DefaultSelectionStyle.of(context).cursorColor,
         focusNode: this._focusNode,
         decoration: widget.decoration != null
             ? widget.decoration
