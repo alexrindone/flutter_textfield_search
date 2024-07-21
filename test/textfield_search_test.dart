@@ -703,6 +703,36 @@ void main() {
             expect(text.controller?.text, 'Test');
       });
 
+  testWidgets(
+      'TextFieldSearch can have cursorColor property override default',
+          (WidgetTester tester) async {
+        // Enter text code...
+        const List dummyList = ['Item 1', 'Item 2'];
+        const String label = 'Test Label';
+        const Key testKey = Key('K');
+        final TextEditingController myController = TextEditingController();
+        // Build an app with the TextFieldSearch
+        await tester.pumpWidget(MaterialApp(
+          home: Scaffold(
+              body: TextFieldSearch(
+                key: testKey,
+                initialList: dummyList,
+                label: label,
+                controller: myController,
+                cursorColor: Colors.orange,
+              )),
+        ));
+
+        await tester.enterText(find.byType(TextField), 'Test');
+        await tester.pumpAndSettle(Duration(milliseconds: 1000));
+        // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
+        TextField text =
+        find.byType(TextField).evaluate().first.widget as TextField;
+
+        // Expect to find TextField cursor is the correct cursor color passed to the constructor
+        expect(text.cursorColor, Colors.orange);
+      });
+
   test('Debouncer executes function only once despite repeated calls',
       () async {
     // test that debouncer waits for 1000ms before calling function

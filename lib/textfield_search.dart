@@ -373,7 +373,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
         controller: widget.controller,
         cursorColor: widget.cursorColor != null
             ? widget.cursorColor
-            : Colors.white,
+            : DefaultSelectionStyle.of(context).cursorColor,
         focusNode: this._focusNode,
         decoration: widget.decoration != null
             ? widget.decoration
