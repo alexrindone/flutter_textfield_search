@@ -267,7 +267,7 @@ void main() {
     expect(selectedItem, 30);
   });
 
-  testWidgets('Tap `No matching items` clears search input',
+  testWidgets('Tap `No matching items` clears search input by default',
       (WidgetTester tester) async {
     // Enter text code...
     const List dummyList = ['Item 1', 'Item 2'];
@@ -664,6 +664,44 @@ void main() {
             ?.hintText,
         hintText);
   });
+
+  testWidgets(
+      'TextFieldSearch can keep TextEditController value on close',
+          (WidgetTester tester) async {
+            // Enter text code...
+            const List dummyList = ['Item 1', 'Item 2'];
+            const String label = 'Test Label';
+            const Key testKey = Key('K');
+            final TextEditingController myController = TextEditingController();
+            // Build an app with the TextFieldSearch
+            await tester.pumpWidget(MaterialApp(
+              home: Scaffold(
+                  body: TextFieldSearch(
+                    key: testKey,
+                    initialList: dummyList,
+                    label: label,
+                    controller: myController,
+                    autoClear: false,
+                  )),
+            ));
+
+            await tester.enterText(find.byType(TextField), 'Test');
+            await tester.pumpAndSettle(Duration(milliseconds: 1000));
+            // Expect that we have a TextField with a value equal to what we entered, and we know will show 'No matching items.'
+            TextField text =
+            find.byType(TextField).evaluate().first.widget as TextField;
+            expect(text.controller?.text, 'Test');
+
+            // Rebuild the widget after the state has changed.
+            await tester.pumpAndSettle(Duration(milliseconds: 1000));
+
+            // Unfocus the input
+            FocusManager.instance.primaryFocus?.unfocus();
+
+            text = find.byType(TextField).evaluate().first.widget as TextField;
+            // Expect to find controller is not cleared and value stays the same
+            expect(text.controller?.text, 'Test');
+      });
 
   test('Debouncer executes function only once despite repeated calls',
       () async {
