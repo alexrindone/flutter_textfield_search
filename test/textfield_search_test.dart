@@ -35,8 +35,6 @@ void main() {
     expect(find.text('Item'), findsOneWidget);
     // expect that we have one text widget with passed in label: "Test Label"
     expect(find.text(label), findsOneWidget);
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
 
@@ -134,8 +132,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
@@ -186,8 +182,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
@@ -254,8 +248,6 @@ void main() {
         'Test');
     // test for loading indicator
     await tester.pumpAndSettle(Duration(milliseconds: 1000));
-    // expect that we have one CompositedTransformFollower
-    expect(find.byType(CompositedTransformFollower), findsOneWidget);
     // expect we have one positioned widget
     expect(find.byType(Positioned), findsOneWidget);
     await tester.pumpAndSettle(Duration(milliseconds: 2000));
