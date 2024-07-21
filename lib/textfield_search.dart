@@ -16,6 +16,10 @@ class TextFieldSearch extends StatefulWidget {
 
   /// The value selected on tap of an element within the list
   final Function? getSelectedValue;
+  
+  
+  /// Used for customizing the display of the CursorColor
+  final MaterialColor? cursorColor;
 
   /// Used for customizing the display of the TextField
   final InputDecoration? decoration;
@@ -44,6 +48,7 @@ class TextFieldSearch extends StatefulWidget {
       this.textStyle,
       this.future,
       this.getSelectedValue,
+      this.cursorColor,
       this.decoration,
       this.scrollbarDecoration,
       this.itemsInView = 3,
@@ -366,6 +371,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       link: this._layerLink,
       child: TextField(
         controller: widget.controller,
+        cursorColor: widget.cursorColor != null
+            ? widget.cursorColor
+            : Colors.white,
         focusNode: this._focusNode,
         decoration: widget.decoration != null
             ? widget.decoration
