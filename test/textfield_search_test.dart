@@ -147,13 +147,13 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 5000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
-      _list.add(_inputText + ' Item 1');
-      _list.add(_inputText + ' Item 2');
-      return _list;
+      list.add('$inputText Item 1');
+      list.add('$inputText Item 2');
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -200,10 +200,10 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = <dynamic>[];
+      List list = <dynamic>[];
       // create a list that returns no results
       // to mock a list of items from an http call
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -253,20 +253,20 @@ void main() {
     // mocking a future that returns List of Objects
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
-      List _jsonList = [
-        {'label': _inputText + ' Item 1', 'value': 30},
-        {'label': _inputText + ' Item 2', 'value': 31},
+      List list = <dynamic>[];
+      String inputText = myController.text;
+      List jsonList = [
+        {'label': '$inputText Item 1', 'value': 30},
+        {'label': '$inputText Item 2', 'value': 31},
       ];
       // create a list from the text input of three items
       // to mock a list of items from an http call where
       // the label is what is seen in the textfield and something like an
       // ID is the selected value
-      _list.add(new TestItem.fromJson(_jsonList[0]));
-      _list.add(new TestItem.fromJson(_jsonList[1]));
+      list.add(TestItem.fromJson(jsonList[0]));
+      list.add(TestItem.fromJson(jsonList[1]));
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -395,8 +395,8 @@ void main() {
     // mocking a future that returns List of Objects
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 3000));
-      List _list = <dynamic>[];
-      List _jsonList = [
+      List list = <dynamic>[];
+      List jsonList = [
         {'label': 'Test Item 1', 'value': 30},
         {'label': 'Test Item 2', 'value': 31},
       ];
@@ -404,10 +404,10 @@ void main() {
       // to mock a list of items from an http call where
       // the label is what is seen in the textfield and something like an
       // ID is the selected value
-      _list.add(new TestItem.fromJson(_jsonList[0]));
-      _list.add(new TestItem.fromJson(_jsonList[1]));
+      list.add(TestItem.fromJson(jsonList[0]));
+      list.add(TestItem.fromJson(jsonList[1]));
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -453,13 +453,13 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 2000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
-      _list.add(_inputText + ' Item 1');
-      _list.add(_inputText + ' Item 2');
-      return _list;
+      list.add('$inputText Item 1');
+      list.add('$inputText Item 2');
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -506,15 +506,15 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 2000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
       for (var i = 0; i <= 10; i++) {
-        _list.add(_inputText + ' Item ' + i.toString());
+        list.add('$inputText Item $i');
       }
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -560,15 +560,15 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 2000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
       for (var i = 0; i <= 10; i++) {
-        _list.add(_inputText + ' Item ' + i.toString());
+        list.add('$inputText Item $i');
       }
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -615,13 +615,13 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 2000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
-      _list.add(_inputText + ' Item 1');
+      list.add('$inputText Item 1');
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -668,13 +668,13 @@ void main() {
     // mocking a future that takes 1000ms to resolve
     Future<List> fetchData() async {
       await Future.delayed(Duration(milliseconds: 2000));
-      List _list = <dynamic>[];
-      String _inputText = myController.text;
+      List list = <dynamic>[];
+      String inputText = myController.text;
       // create a list from the text input of three items
       // to mock a list of items from an http call
-      _list.add(_inputText + ' Item 1');
+      list.add('$inputText Item 1');
 
-      return _list;
+      return list;
     }
 
     // Build an app with the TextFieldSearch
@@ -782,31 +782,31 @@ void main() {
   test('Debouncer executes function only once despite repeated calls',
       () async {
     // test that debouncer waits for 1000ms before calling function
-    Debouncer _debouncer = Debouncer(milliseconds: 1000);
+    Debouncer debouncer = Debouncer(milliseconds: 1000);
     // expect that the value we pass for milliseconds is the same
-    expect(_debouncer.milliseconds, 1000);
+    expect(debouncer.milliseconds, 1000);
     // empty list to add an Item to
-    List _testList = <dynamic>[];
+    List testList = <dynamic>[];
     // function to attempt to call multiple times that adds an item to a list
     void testFn() {
-      _testList.add('Item');
+      testList.add('Item');
     }
 
     // call the function immediately
-    _debouncer.run(() => testFn());
+    debouncer.run(() => testFn());
     // since debounce is after 1000ms, the testList should still be empty
-    expect(_testList.length, 0);
+    expect(testList.length, 0);
 
     // Call the function several times with 500ms between each call
     for (var i = 0; i < 10; i++) {
       await Future.delayed(Duration(milliseconds: 500));
-      _debouncer.run(() => testFn());
+      debouncer.run(() => testFn());
     }
     // wait 1000ms so the last function call for debounce occurs
     await Future.delayed(Duration(milliseconds: 1000));
     // since the function executed, list should have one item in it
-    expect(_testList.length, 1); // func called
-    expect(_testList[0], 'Item');
+    expect(testList.length, 1); // func called
+    expect(testList[0], 'Item');
   });
 }
 

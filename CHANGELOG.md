@@ -1,4 +1,9 @@
 # Changelog
+## 0.11.1
+7-23-2024
+- Upgrading static analysis
+- Upgrading documentation
+
 ## 0.11.0
 7-21-2024
 - Upgrading various dependencies
