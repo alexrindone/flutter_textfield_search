@@ -210,8 +210,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           } else {
             textMatchesItem = filteredList!.contains(widget.controller.text);
           }
-          if (textMatchesItem == false && widget.autoClear == true)
+          if (textMatchesItem == false && widget.autoClear == true) {
             widget.controller.clear();
+          }
           resetList();
         }
       }
