@@ -16,8 +16,7 @@ class TextFieldSearch extends StatefulWidget {
 
   /// The value selected on tap of an element within the list
   final Function? getSelectedValue;
-  
-  
+
   /// Used for customizing the display of the CursorColor
   final MaterialColor? cursorColor;
 
@@ -52,7 +51,7 @@ class TextFieldSearch extends StatefulWidget {
       this.future,
       this.getSelectedValue,
       this.cursorColor,
-        this.resultsBackgroundColor,
+      this.resultsBackgroundColor,
       this.decoration,
       this.scrollbarDecoration,
       this.itemsInView = 3,
@@ -101,9 +100,8 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       filteredList = tempList;
       loading = false;
       // if no items are found, add message none found
-      itemsFound = tempList.isEmpty && widget.controller.text.isNotEmpty
-          ? false
-          : true;
+      itemsFound =
+          tempList.isEmpty && widget.controller.text.isNotEmpty ? false : true;
     });
     // mark that the overlay widget needs to be rebuilt so results can show
     _overlayEntry.markNeedsBuild();
@@ -200,7 +198,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           // reset the list so it's empty and not visible
           resetList();
           if (widget.autoClear == true) widget.controller.clear();
-          
         }
         // if we have a list of items, make sure the text input matches one of them
         // if not, clear the input
@@ -213,7 +210,9 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
           } else {
             textMatchesItem = filteredList!.contains(widget.controller.text);
           }
-          if (textMatchesItem == false && widget.autoClear == true) widget.controller.clear();
+          if (textMatchesItem == false && widget.autoClear == true) {
+            widget.controller.clear();
+          }
           resetList();
         }
       }
@@ -374,9 +373,11 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
       link: _layerLink,
       child: TextField(
         controller: widget.controller,
-        cursorColor: widget.cursorColor ?? DefaultSelectionStyle.of(context).cursorColor,
+        cursorColor:
+            widget.cursorColor ?? DefaultSelectionStyle.of(context).cursorColor,
         focusNode: _focusNode,
-        decoration: widget.decoration ?? InputDecoration(labelText: widget.label),
+        decoration:
+            widget.decoration ?? InputDecoration(labelText: widget.label),
         style: widget.textStyle,
         onChanged: (String value) {
           // every time we make a change to the input, update the list
