@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -14,18 +16,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title = 'My Home Page'}) : super(key: key);
+  const MyHomePage({super.key, this.title = 'My Home Page'});
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -51,10 +53,10 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   _printLatestValue() {
-    print("text field: ${myController.text}");
-    print("text field: ${myController2.text}");
-    print("text field: ${myController3.text}");
-    print("text field: ${myController4.text}");
+    debugPrint("text field: ${myController.text}");
+    debugPrint("text field: ${myController2.text}");
+    debugPrint("text field: ${myController3.text}");
+    debugPrint("text field: ${myController4.text}");
   }
 
   @override
@@ -70,35 +72,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // mocking a future
   Future<List> fetchSimpleData() async {
-    print("Calling future simple data...");
-    await Future.delayed(Duration(milliseconds: 2000));
-    List _list = <dynamic>[];
+    debugPrint("Calling future simple data...");
+    await Future.delayed(const Duration(milliseconds: 2000));
+    List list = <dynamic>[];
     // create a list from the text input of three items
     // to mock a list of items from an http call
-    _list.add('Test' + ' Item 1');
-    _list.add('Test' + ' Item 2');
-    _list.add('Test' + ' Item 3');
-    return _list;
+    list.add('Test Item 1');
+    list.add('Test Item 2');
+    list.add('Test Item 3');
+    return list;
   }
 
   // mocking a future that returns List of Objects
   Future<List> fetchComplexData() async {
-    print("Calling future complex data");
-    await Future.delayed(Duration(milliseconds: 1000));
-    List _list = <dynamic>[];
-    List _jsonList = [
-      {'label': 'Test' + ' Item 1', 'value': 30},
-      {'label': 'Test' + ' Item 2', 'value': 31},
-      {'label': 'Test' + ' Item 3', 'value': 32},
+    debugPrint("Calling future complex data");
+    await Future.delayed(const Duration(milliseconds: 1000));
+    List list = <dynamic>[];
+    List jsonList = [
+      {'label': 'Test Item 1', 'value': 30},
+      {'label': 'Test Item 2', 'value': 31},
+      {'label': 'Test Item 3', 'value': 32},
     ];
     // create a list from the text input of three items
     // to mock a list of items from an http call where
     // the label is what is seen in the textfield and something like an
     // ID is the selected value
-    _list.add(new TestItem.fromJson(_jsonList[0]));
-    _list.add(new TestItem.fromJson(_jsonList[1]));
-    _list.add(new TestItem.fromJson(_jsonList[2]));
-    return _list;
+    list.add(TestItem.fromJson(jsonList[0]));
+    list.add(TestItem.fromJson(jsonList[1]));
+    list.add(TestItem.fromJson(jsonList[2]));
+    return list;
   }
 
   @override
@@ -110,20 +112,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Form(
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   label: 'Simple Future List',
                   controller: myController2,
                   future: () {
                     return fetchSimpleData();
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                 label: 'Complex Future List',
                 controller: myController3,
@@ -131,11 +133,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   return fetchComplexData();
                 },
                 getSelectedValue: (item) {
-                  print(item);
+                  debugPrint(item);
                 },
                 minStringLength: 4,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   label: 'Future List with custom scrollbar theme',
                   controller: myController4,
@@ -148,14 +150,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   future: () {
                     return fetchSimpleData();
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   initialList: _testList,
                   label: 'Simple List',
                   controller: myController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
               ),
             ],
           ),
