@@ -3,13 +3,13 @@
 name: Build and Tests
 
 # Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
+# events but only for the main branch
 on:
   pull_request:
-#    types: [opened, reopened]
+    #    types: [opened, reopened]
     paths-ignore:
-    - 'coverage/**'
-    branches: [ master ]
+      - 'coverage/**'
+    branches: [ main ]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,25 +20,26 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.head_ref }}
-    - uses: actions/setup-java@v1
-      with:
-        java-version: '12.x'
-    - uses: subosito/flutter-action@v1
-      with:
-        channel: 'stable'
-    - run: |
-        flutter pub get
-        flutter analyze
-        flutter test --coverage
-        bash test-coverage.sh
-        git status
-        git add .
-        git config user.email "arindone@iapp.org"
-        git config user.name "Alex Rindone"
-        git commit --allow-empty -m "auto updating coverage.json and lcov.info"
-        git push origin ${{ github.head_ref }}
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+      - run: |
+          flutter pub get
+          flutter analyze
+          flutter test --coverage
+          bash test-coverage.sh
+          git status
+          git add .
+          git config user.email "arindone@iapp.org"
+          git config user.name "Alex Rindone"
+          git commit --allow-empty -m "auto updating coverage.json and lcov.info"
+          git push origin ${{ github.head_ref }}
 
