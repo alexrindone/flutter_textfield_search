@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.12.2
+
+9-9-2026
+
+- DOCUMENTATION: Fixed legacy code snippets in README.md and updated build badge.
+
 ## 0.12.1
 
 9-9-2026
