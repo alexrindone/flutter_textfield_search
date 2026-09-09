@@ -43,7 +43,7 @@ class TextFieldSearch extends StatefulWidget {
 
   /// Creates a TextFieldSearch for displaying selected elements and retrieving a selected element
   const TextFieldSearch(
-      {Key? key,
+      {super.key,
       this.initialList,
       required this.label,
       required this.controller,
@@ -56,8 +56,7 @@ class TextFieldSearch extends StatefulWidget {
       this.scrollbarDecoration,
       this.itemsInView = 3,
       this.minStringLength = 2,
-      this.autoClear = true})
-      : super(key: key);
+      this.autoClear = true});
 
   @override
   State<TextFieldSearch> createState() => _TextFieldSearchState();
@@ -286,7 +285,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
 
   /// A default loading indicator to display when executing a Future
   Widget _loadingIndicator() {
-    return Container(
+    return SizedBox(
       width: 50,
       height: 50,
       child: Center(
@@ -313,7 +312,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   Widget? _listViewContainer(context) {
     if (itemsFound == true && filteredList!.isNotEmpty ||
         itemsFound == false && widget.controller.text.isNotEmpty) {
-      return Container(
+      return SizedBox(
           height: calculateHeight().toDouble(),
           child: decoratedScrollbar(_listViewBuilder(context)));
     }

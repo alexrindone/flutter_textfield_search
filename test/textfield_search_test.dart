@@ -425,7 +425,7 @@ void main() {
           return fetchData();
         },
         getSelectedValue: (item) {
-          print(item);
+          debugPrint(item);
         },
       )),
     ));
@@ -815,6 +815,7 @@ void main() {
 class TestItem {
   String label;
   dynamic value;
+
   TestItem({required this.label, this.value});
 
   factory TestItem.fromJson(Map<String, dynamic> json) {
