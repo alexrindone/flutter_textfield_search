@@ -1,12 +1,11 @@
 # flutter_textfield_search
 
-![Build and Test](https://github.com/alexrindone/flutter_textfield_search/workflows/Build%20and%20Tests/badge.svg)
+![Build and Test](https://github.com/alexrindone/flutter_textfield_search/actions/workflows/build-test.yml/badge.svg?branch=main)
 
 FTFS is a Flutter package which uses a TextField Widget to search and select a value from a list.
 It's a simple, lightweight, and fully tested package unlike other "autocomplete" or textfield search
-packages. View complete code coverage results in JSON format  *
-*[here](https://raw.githubusercontent.com/alexrindone/flutter_textfield_search/main/coverage/coverage.json)
-**.
+packages. View complete code coverage results in JSON
+format [here](https://raw.githubusercontent.com/alexrindone/flutter_textfield_search/main/coverage/coverage.json).
 
 <img src="https://i.imgur.com/lXmQghw.gif" />
 
