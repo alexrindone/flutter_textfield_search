@@ -1,21 +1,29 @@
 # flutter_textfield_search
+
 ![Build and Test](https://github.com/alexrindone/flutter_textfield_search/workflows/Build%20and%20Tests/badge.svg)
 
-FTFS is a Flutter package which uses a TextField Widget to search and select a value from a list. It's a simple, lightweight, and fully tested package unlike other "autocomplete" or textfield search packages. View complete code coverage results in JSON format  **[here](https://raw.githubusercontent.com/alexrindone/flutter_textfield_search/master/coverage/coverage.json)**.
+FTFS is a Flutter package which uses a TextField Widget to search and select a value from a list.
+It's a simple, lightweight, and fully tested package unlike other "autocomplete" or textfield search
+packages. View complete code coverage results in JSON format  *
+*[here](https://raw.githubusercontent.com/alexrindone/flutter_textfield_search/main/coverage/coverage.json)
+**.
 
 <img src="https://i.imgur.com/lXmQghw.gif" />
 
 ## Usage
+
 To use this package, add flutter_textfield_search as a dependency in your pubsec.yaml file.
 
 ## Example
+
 Import the package.
 
     `import 'package:flutter_textfield_search/textfield_search.dart'`;
 
-Then include the widget anywhere you would normally use a TextField widget with a String for label, a List for initialList, and a TextEditingController for controller.
-    <br>Example MaterialApp using TextFieldSearch Widget
-    <br>
+Then include the widget anywhere you would normally use a TextField widget with a String for label,
+a List for initialList, and a TextEditingController for controller.
+<br>Example MaterialApp using TextFieldSearch Widget
+<br>
 
         const label = "Some Label";
         const dummyList = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
@@ -25,7 +33,7 @@ Then include the widget anywhere you would normally use a TextField widget with 
           body: TextFieldSearch(initialList: dummyList, label: label, controller: myController)
           ),
         )
-        
+
 To get the value of the selected option, use addListener on the controller to listen for changes:
 
         @override
@@ -48,20 +56,20 @@ To get the value of the selected option, use addListener on the controller to li
         }
 
 Selecting a List item from a Future List:
-        
+
         TextEditingController myController = TextEditingController();
 
         // create a Future that returns List
         Future<List> fetchData() async {
           await Future.delayed(Duration(milliseconds: 5000));
-          List _list = new List();
+          List list = [];
           String _inputText = myController.text;
           // create a list from the text input of three items
           // to mock a list of items from an http call
-          _list.add(_inputText + ' Item 1');
-          _list.add(_inputText + ' Item 2');
-          _list.add(_inputText + ' Item 3');
-          return _list;
+          list.add(_inputText + ' Item 1');
+          list.add(_inputText + ' Item 2');
+          list.add(_inputText + ' Item 3');
+          return list;
         }
 
         @override
@@ -86,7 +94,7 @@ Selecting a List item from a Future List:
         )
 
 Selecting an object from a Future List:
-        
+
         TextEditingController myController = TextEditingController();
 
         // create a Future that returns List
@@ -94,9 +102,9 @@ Selecting an object from a Future List:
         // The label property is what is used to populate the TextField while getSelectedValue returns the actual object selected
         Future<List> fetchData() async {
           await Future.delayed(Duration(milliseconds: 3000));
-          List _list = new List();
+          List list = [];
           String _inputText = myController.text;
-          List _jsonList = [
+          List jsonList = [
             {
               'label': _inputText + ' Item 1',
               'value': 30
@@ -111,10 +119,10 @@ Selecting an object from a Future List:
             },
           ];
           // create a list of 3 objects from a fake json response
-          _list.add(new TestItem.fromJson(_jsonList[0]));
-          _list.add(new TestItem.fromJson(_jsonList[1]));
-          _list.add(new TestItem.fromJson(_jsonList[2]));
-          return _list;
+          list.add(TestItem.fromJson(jsonList[0]));
+          list.add(TestItem.fromJson(jsonList[1]));
+          list.add(TestItem.fromJson(jsonList[2]));
+          return list;
         }
 
         @override
@@ -143,12 +151,9 @@ Selecting an object from a Future List:
 
         // Mock Test Item Class
         class TestItem {
-          String label;
+          final String label;
           dynamic value;
-          TestItem({
-            this.label,
-            this.value
-          });
+          TestItem({ required this.label, this.value });
 
           factory TestItem.fromJson(Map<String, dynamic> json) {
             return TestItem(
@@ -160,9 +165,14 @@ Selecting an object from a Future List:
 
 ## Issues
 
-Please email any issues, bugs, or additional features you would like to see built to arindone@nubeer.io.
+Please email any issues, bugs, or additional features you would like to see built to
+arindone@nubeer.io.
 
 ## Contributing
 
-If you wish to contribute to this package you may fork the repository and make a pull request to this repository.
-<br><br>**Note**: Testing by running `flutter test --coverage` will generate `coverage/lcov.info`. Running `bash test-coverage.sh` will parse the `lcov.info` file into JSON format. This happens automatically within the CI/CD pipeline on a pull request to master but it is always good to test locally.
+If you wish to contribute to this package you may fork the repository and make a pull request to
+this repository.
+<br><br>**Note**: Testing by running `flutter test --coverage` will generate `coverage/lcov.info`.
+Running `bash test-coverage.sh` will parse the `lcov.info` file into JSON format. This happens
+automatically within the CI/CD pipeline on a pull request to main but it is always good to test
+locally.

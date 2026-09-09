@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.1
+
+9-9-2026
+
+- Modernizing CI/CD
+- Updating README.md
+
 ## 0.12.0
 
 9-9-2026
