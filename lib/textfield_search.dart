@@ -12,10 +12,10 @@ class TextFieldSearch extends StatefulWidget {
   final TextEditingController controller;
 
   /// An optional future or async function that should return a list of selectable elements
-  final Function? future;
+  final Future<List<dynamic>> Function()? future;
 
   /// The value selected on tap of an element within the list
-  final Function? getSelectedValue;
+  final void Function(dynamic)? getSelectedValue;
 
   /// Used for customizing the display of the CursorColor
   final MaterialColor? cursorColor;

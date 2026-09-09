@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:textfield_search/textfield_search.dart';
 import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -14,13 +16,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title = 'My Home Page'}) : super(key: key);
+  const MyHomePage({super.key, this.title = 'My Home Page'});
 
   final String title;
 
@@ -95,9 +97,9 @@ class _MyHomePageState extends State<MyHomePage> {
     // to mock a list of items from an http call where
     // the label is what is seen in the textfield and something like an
     // ID is the selected value
-    _list.add(new TestItem.fromJson(_jsonList[0]));
-    _list.add(new TestItem.fromJson(_jsonList[1]));
-    _list.add(new TestItem.fromJson(_jsonList[2]));
+    _list.add(TestItem.fromJson(_jsonList[0]));
+    _list.add(TestItem.fromJson(_jsonList[1]));
+    _list.add(TestItem.fromJson(_jsonList[2]));
     return _list;
   }
 
@@ -110,20 +112,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Form(
           child: ListView(
             children: <Widget>[
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   label: 'Simple Future List',
                   controller: myController2,
                   future: () {
                     return fetchSimpleData();
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                 label: 'Complex Future List',
                 controller: myController3,
@@ -135,7 +137,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 },
                 minStringLength: 4,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   label: 'Future List with custom scrollbar theme',
                   controller: myController4,
@@ -148,14 +150,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   future: () {
                     return fetchSimpleData();
                   }),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFieldSearch(
                   initialList: _testList,
                   label: 'Simple List',
                   controller: myController),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               TextFormField(
-                decoration: InputDecoration(labelText: 'Description'),
+                decoration: const InputDecoration(labelText: 'Description'),
               ),
             ],
           ),
