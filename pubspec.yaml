@@ -1,20 +1,20 @@
 name: textfield_search
 description: A new Flutter package which uses a TextField to search and select it's value from a simple list.
 homepage: https://github.com/alexrindone/flutter_textfield_search
-version: 0.12.2
+version: 0.12.3
 
 environment:
   sdk: ">=2.17.0 <4.0.0"
 
 dependencies:
-  cupertino_icons: ^1.0.8
+  cupertino_icons: ^1.0.9
   flutter:
     sdk: flutter
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^5.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
   # The following line ensures that the Material Icons font is

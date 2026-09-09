@@ -224,7 +224,7 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     super.dispose();
   }
 
-  ListView _listViewBuilder(context) {
+  ListView _listViewBuilder(BuildContext context) {
     if (itemsFound == false) {
       return ListView(
         padding: EdgeInsets.zero,
@@ -297,19 +297,22 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
     );
   }
 
-  Widget decoratedScrollbar(child) {
+  Widget decoratedScrollbar(Widget child) {
     if (widget.scrollbarDecoration is ScrollbarDecoration) {
       return Theme(
         data: Theme.of(context)
             .copyWith(scrollbarTheme: widget.scrollbarDecoration!.theme),
-        child: Scrollbar(child: child, controller: _scrollController),
+        child: Scrollbar(
+          controller: _scrollController,
+          child: child,
+        ),
       );
     }
 
     return Scrollbar(child: child);
   }
 
-  Widget? _listViewContainer(context) {
+  Widget? _listViewContainer(BuildContext context) {
     if (itemsFound == true && filteredList!.isNotEmpty ||
         itemsFound == false && widget.controller.text.isNotEmpty) {
       return SizedBox(
@@ -407,7 +410,7 @@ class Debouncer {
   /// Creates a Debouncer that executes a function after a certain length of time in milliseconds
   Debouncer({this.milliseconds});
 
-  run(VoidCallback action) {
+  void run(VoidCallback action) {
     if (_timer != null) {
       _timer!.cancel();
     }

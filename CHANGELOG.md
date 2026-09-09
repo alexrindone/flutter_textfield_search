@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.12.3
+
+9-9-2026
+
+* DEPENDENCIES: Updated `flutter_lints` to 6.0.0 and `cupertino_icons` to 1.0.9.
+* LINTING: Resolved new strict type inference rules introduced in `flutter_lints` 6.0.
+* MODERNIZED: Added explicit type annotations for BuildContext, Widget, and function return types.
+
 ## 0.12.2
 
 9-9-2026

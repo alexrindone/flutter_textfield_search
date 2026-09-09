@@ -52,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
     myController4.addListener(_printLatestValue);
   }
 
-  _printLatestValue() {
+  void _printLatestValue() {
     debugPrint("text field: ${myController.text}");
     debugPrint("text field: ${myController2.text}");
     debugPrint("text field: ${myController3.text}");
