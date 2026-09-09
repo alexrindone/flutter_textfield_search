@@ -1,10 +1,7 @@
 .DS_Store
-.dart_tool/
 
 .packages
-.pub/
 
-.idea/
 .vagrant/
 .sconsign.dblite
 .svn/
@@ -35,14 +32,24 @@ xcuserdata
 Icon?
 .tags*
 
-build/
 .android/
 .ios/
-.flutter-plugins
-.flutter-plugins-dependencies
 
 # Symbolication related
 app.*.symbols
 
 # Obfuscation related
 app.*.map.json
+
+# IDE and Tooling
+.artifacts/
+*.iml
+.idea/
+
+# Flutter specific
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+build/
