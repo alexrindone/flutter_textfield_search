@@ -222,7 +222,6 @@ class _TextFieldSearchState extends State<TextFieldSearch> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    widget.controller.dispose();
     super.dispose();
   }
 
