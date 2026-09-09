@@ -5,6 +5,8 @@ name: Build and Tests
 # Controls when the action will run. Triggers the workflow on push or pull request
 # events but only for the main branch
 on:
+  push:
+    branches: [ main ]
   pull_request:
     #    types: [opened, reopened]
     paths-ignore:
@@ -19,11 +21,13 @@ jobs:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
+    permissions:
+      contents: write
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.ref || github.ref }}
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
@@ -36,10 +40,13 @@ jobs:
           flutter analyze
           flutter test --coverage
           bash test-coverage.sh
-          git status
-          git add .
-          git config user.email "arindone@iapp.org"
-          git config user.name "Alex Rindone"
-          git commit --allow-empty -m "auto updating coverage.json and lcov.info"
-          git push origin ${{ github.head_ref }}
+           # Only update coverage files during a Pull Request
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            git status
+            git add .
+            git config user.email "arindone@artistryfair.com"
+            git config user.name "Alex Rindone"
+            git commit --allow-empty -m "auto updating coverage.json and lcov.info"
+            git push origin HEAD:${{ github.event.pull_request.head.ref }}
+          fi
 
